@@ -13,9 +13,30 @@
 
     <artifactId>api</artifactId>
     <name>ADMIN API</name>
-
     <properties>
         <application.class>io.github.jonaskahn.AppKt</application.class>
+
+        <jooby.version>3.2.6</jooby.version>
+        <kotlin.version>2.0.0</kotlin.version>
+        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.parameters>true</maven.compiler.parameters>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <swagger.version>2.2.22</swagger.version>
+        <jackson.version>3.1.3</jackson.version>
+        <mariadb.version>3.4.0</mariadb.version>
+        <flyway.version>9.22.3</flyway.version>
+        <bcrypt-version>0.10.2</bcrypt-version>
+        <tsid.version>2.1.2</tsid.version>
+        <commons-lang3.version>3.15.0</commons-lang3.version>
+        <mapstruct.version>1.6.0.Beta2</mapstruct.version>
+        <redis.version>5.1.3</redis.version>
+        <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
+        <jakarta.el.version>5.0.1</jakarta.el.version>
+        <expressly.version>5.0.0</expressly.version>
+        <jackson-datatype-jsr310.version>2.17.2</jackson-datatype-jsr310.version>
     </properties>
 
     <dependencies>
@@ -180,7 +201,10 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <sourceDirectory>${project.basedir}${file.separator}src${file.separator}main${file.separator}kotlin
+        </sourceDirectory>
+        <testSourceDirectory>${project.basedir}${file.separator}src${file.separator}test${file.separator}kotlin
+        </testSourceDirectory>
         <resources>
             <resource>
                 <directory>conf</directory>
@@ -275,9 +299,12 @@
                 <version>${jooby.version}</version>
                 <executions>
                     <execution>
+                        <phase>compile</phase>
                         <goals>
-<!--                            <goal>openapi</goal>-->
+                            <!--                            <goal>openapi</goal>-->
                         </goals>
+                        <configuration>
+                        </configuration>
                     </execution>
                 </executions>
                 <dependencies>
@@ -313,7 +340,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.3.1</version>
@@ -351,3 +377,4 @@
         </dependencies>
     </dependencyManagement>
 </project>
+

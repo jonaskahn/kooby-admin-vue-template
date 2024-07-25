@@ -93,7 +93,7 @@ class JpaQueryExecutor<T> private constructor() : QueryExecutor<T> {
     companion object {
 
         fun <T> builder() = Executor<T>()
-        private val objectMapper = JsonMapper.instance
+        private val objectMapper = JsonMapper.INSTANCE
 
         private fun getCollectionType(collectionClass: Class<*>, vararg elementClasses: Class<*>): JavaType {
             return objectMapper.typeFactory
