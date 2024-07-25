@@ -160,7 +160,7 @@ fun Kooby.routes() {
     mount("/api", RouteDefinition())
 }
 
-private class RouteDefinition: Kooby({
+private class RouteDefinition : Kooby({
     mvc(HealthController::class.java)
     mvc(AuthController::class.java)
     mvc(UserController::class.java)
@@ -178,6 +178,12 @@ fun Kooby.web() {
         ctx.forward("/")
     }
     get("/utilities*") {
+        ctx.forward("/")
+    }
+    get("/page*") {
+        ctx.forward("/")
+    }
+    get("/landing") {
         ctx.forward("/")
     }
     get("/documentation") {
