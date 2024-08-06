@@ -5,9 +5,9 @@ import com.google.inject.ImplementedBy
 @ImplementedBy(AccessVerifierImpl::class)
 interface AccessVerifier {
 
-    fun hasRole(role: String): Boolean
+    fun hasRole(role: String): Boolean = hasAnyRoles(role)
 
-    fun requireRole(role: String)
+    fun requireRole(role: String) = requireAnyRoles(role)
 
     fun hasAnyRoles(vararg roles: String): Boolean
 

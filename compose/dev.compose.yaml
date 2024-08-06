@@ -1,0 +1,38 @@
+version: "3"
+
+networks:
+  app:
+    internal: false
+    enable_ipv6: false
+
+services:
+  database-01:
+    image: bitnami/mariadb:10.11
+    container_name: database-01
+    restart: unless-stopped
+    environment:
+      - MARIADB_ROOT_USER=root
+      - MARIADB_ROOT_PASSWORD=dev
+      - MARIADB_DATABASE=dev
+      - MARIADB_USER=dev
+      - MARIADB_PASSWORD=dev
+      - MARIADB_ENABLE_SLOW_QUERY=1
+    ports:
+      - "3316:3306"
+    volumes:
+      - ./mariadb.conf:/opt/bitnami/mariadb/conf/mariadb.conf
+    healthcheck:
+      test: [ 'CMD', '/opt/bitnami/scripts/mariadb/healthcheck.sh' ]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+    networks:
+      - app
+  cache-01:
+    image: redis:7.2
+    container_name: cache-01
+    restart: unless-stopped
+    ports:
+      - "6389:6379"
+    networks:
+      - app

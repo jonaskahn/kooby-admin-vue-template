@@ -10,7 +10,7 @@ class StatusConverter : AttributeConverter<Status, Int> {
         return status?.id
     }
 
-    override fun convertToEntityAttribute(code: Int): Status {
-        return Status.of(code)
+    override fun convertToEntityAttribute(id: Int): Status {
+        return Status.of(id)
     }
 }

@@ -1,13 +1,13 @@
 package io.github.jonaskahn.services.user
 
 import com.google.inject.ImplementedBy
-import io.github.jonaskahn.controller.auth.UserRegisterRequest
+import io.github.jonaskahn.controllers.user.UserRegisterRequest
 
 @ImplementedBy(UserServiceImpl::class)
 interface UserService {
     fun createUser(request: UserRegisterRequest)
 
-    fun getCurrentUserInfo(): UserInfoDto
+    fun getCurrentUserInfo(): UserDto
 
-    fun getCurrentUserInfoWithExecutor(): UserInfoDto
+    fun getCurrentUserInfoWithExecutor(): UserDto
 }

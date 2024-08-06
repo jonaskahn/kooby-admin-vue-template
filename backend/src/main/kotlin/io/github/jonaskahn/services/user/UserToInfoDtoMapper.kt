@@ -12,5 +12,5 @@ interface UserToInfoDtoMapper {
     }
 
     @Mapping(target = "statusName", ignore = true)
-    fun userToUserInfoDto(user: User): UserInfoDto
+    fun userToUserInfoDto(user: User): UserDto
 }

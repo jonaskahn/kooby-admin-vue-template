@@ -6,8 +6,4 @@ object Jwt {
         const val JTI = "jti"
         const val EXP = "exp"
     }
-
-    object RedisPrefix {
-        const val USER_TOKEN = "UserToken"
-    }
 }

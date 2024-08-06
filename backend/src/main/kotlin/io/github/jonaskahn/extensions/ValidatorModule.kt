@@ -7,11 +7,12 @@ import jakarta.validation.Validator
 
 class ValidatorModule : Extension {
     companion object {
-        private val validator = Validation.buildDefaultValidatorFactory().validator
+        private val factory = Validation.buildDefaultValidatorFactory()
     }
 
     override fun install(application: Jooby) {
         val registry = application.services
-        registry.put(Validator::class.java, validator)
+        registry.put(Validator::class.java, factory.validator)
+        application.onStop(factory::close)
     }
 }

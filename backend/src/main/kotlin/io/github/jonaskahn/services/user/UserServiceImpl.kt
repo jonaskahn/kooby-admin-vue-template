@@ -1,7 +1,7 @@
 package io.github.jonaskahn.services.user
 
 import io.github.jonaskahn.constants.Jwt
-import io.github.jonaskahn.controller.auth.UserRegisterRequest
+import io.github.jonaskahn.controllers.user.UserRegisterRequest
 import io.github.jonaskahn.entities.User
 import io.github.jonaskahn.entities.enums.Status
 import io.github.jonaskahn.exception.ShouldNeverOccurException
@@ -11,6 +11,7 @@ import io.hypersistence.tsid.TSID
 import io.jooby.Context
 import jakarta.inject.Inject
 import org.pac4j.core.profile.BasicUserProfile
+import org.pac4j.core.profile.UserProfile
 
 internal class UserServiceImpl @Inject constructor(
     private val userRepository: UserRepository,
@@ -32,8 +33,8 @@ internal class UserServiceImpl @Inject constructor(
         userRepository.create(newUser)
     }
 
-    override fun getCurrentUserInfo(): UserInfoDto {
-        val userProfile = context.getUser<BasicUserProfile>()
+    override fun getCurrentUserInfo(): UserDto {
+        val userProfile = context.getUser<UserProfile>()
         val preferredUsername =
             userProfile?.getAttribute(Jwt.Attribute.UID)?.toString() ?: throw ShouldNeverOccurException()
         val user = userRepository.findActivatedUserByPreferredUsername(preferredUsername.toLong())
@@ -41,7 +42,7 @@ internal class UserServiceImpl @Inject constructor(
         return UserToInfoDtoMapper.INSTANCE.userToUserInfoDto(user)
     }
 
-    override fun getCurrentUserInfoWithExecutor(): UserInfoDto {
+    override fun getCurrentUserInfoWithExecutor(): UserDto {
         val userProfile = context.getUser<BasicUserProfile>()
         val preferredUsername =
             userProfile?.getAttribute(Jwt.Attribute.UID)?.toString() ?: throw ShouldNeverOccurException()

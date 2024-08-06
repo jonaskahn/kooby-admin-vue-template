@@ -6,9 +6,9 @@ h5,
 h6 {
     margin: 1.5rem 0 1rem 0;
     font-family: inherit;
-    font-weight: 500;
-    line-height: 1.2;
-    color: var(--surface-900);
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--text-color);
 
     &:first-child {
         margin-top: 0;
@@ -42,7 +42,7 @@ h6 {
 mark {
     background: #fff8e1;
     padding: 0.25rem 0.4rem;
-    border-radius: $borderRadius;
+    border-radius: var(--content-border-radius);
     font-family: monospace;
 }
 

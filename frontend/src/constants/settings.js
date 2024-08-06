@@ -1,18 +1,17 @@
-export default {
-    INPUT_SETTING: 'GlobalSettingInputStyle',
-    DARK_MODE: 'GlobalSettingDarkMode',
-    MENU_MODE: 'GlobalSettingMenuMode',
-    PREFER_THEME: 'GlobalSettingPreferTheme',
-    PREFER_THEME_FOCUS_RING: 'GlobalSettingPreferThemeFocusRing',
-    PREFER_THEME_COMPACT_MATERIAL: 'GlobalSettingPreferThemeCompactMaterial',
-    SCALE_FACTOR: 'GlobalSettingScaleFactor',
-    RIPPLE_MODE: 'GlobalSettingRippleMode',
+const SETTINGS = {
     LOADING_PROPERTIES: {
         loader: 'bars',
-        opacity: 0.2,
+        opacity: 0.4,
         color: 'var(--primary-color)',
-        width: 64,
-        height: 64
+        width: 128,
+        height: 128
     },
-    CURRENT_LOCALE: 'GlobalSettingCurrentLocale'
+    USE_DARK_MODE: 'AppSettingUseDarkMode',
+    MENU_MODE: 'AppSettingMenuMode',
+    SURFACE_THEME: 'AppSettingSurfaceTheme',
+    PRIMARY_THEME: 'AppSettingPrimaryTheme',
+    PRESET_THEME: 'AppSettingPresetTheme',
+    CURRENT_LOCALE: 'AppSettingCurrentLocale'
 };
+
+export default SETTINGS;

@@ -6,13 +6,13 @@ interface QueryExecutor<T> {
 
     fun list(): List<T>
 
-    fun getListResult(): List<T> {
-        return list()
-    }
-
     fun unique(): T?
 
     fun first(): T?
+
+    fun getListResult(): List<T> {
+        return list()
+    }
 
     fun getSingleResult(): T? {
         return unique()

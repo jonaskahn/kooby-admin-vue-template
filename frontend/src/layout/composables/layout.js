@@ -1,18 +1,14 @@
-import { toRefs, reactive, computed } from 'vue';
-import GlobalSettingService from '@/service/GlobalSettingService';
+import { computed, reactive, readonly } from 'vue';
+import { SettingService } from '@/service/SettingService';
 
-const globalSettingService = GlobalSettingService.instance;
+const settingService = SettingService.INSTANCE;
 
 const layoutConfig = reactive({
-    ripple: globalSettingService.useRippleMode(),
-    darkTheme: globalSettingService.useDarkMode(),
-    inputStyle: globalSettingService.getInputStyle(),
-    menuMode: globalSettingService.getMenuMode(),
-    theme: globalSettingService.getTheme(),
-    scale: globalSettingService.getScaleFactor(),
-    focusRing: globalSettingService.useFocusRing(),
-    compactMaterial: globalSettingService.useCompactMaterial(),
-    activeMenuItem: null
+    preset: settingService.getPresetTheme(),
+    primary: settingService.getPrimaryTheme(),
+    surface: settingService.getSurfaceTheme(),
+    darkTheme: settingService.isUseDarkMode(),
+    menuMode: settingService.getMenuMode()
 });
 
 const layoutState = reactive({
@@ -21,17 +17,56 @@ const layoutState = reactive({
     profileSidebarVisible: false,
     configSidebarVisible: false,
     staticMenuMobileActive: false,
-    menuHoverActive: false
+    menuHoverActive: false,
+    activeMenuItem: null
 });
 
 export function useLayout() {
-    const setScale = (scale) => {
-        layoutConfig.scale = scale;
-        globalSettingService.setScaleFactor(scale);
+    const setPrimary = (value) => {
+        layoutConfig.primary = value;
+        settingService.setPrimaryTheme(value);
+    };
+
+    const setSurface = (value) => {
+        layoutConfig.surface = value;
+        settingService.setSurfaceTheme(value);
+    };
+
+    const setPreset = (value) => {
+        layoutConfig.preset = value;
+        settingService.setPresetTheme(value);
     };
 
     const setActiveMenuItem = (item) => {
-        layoutConfig.activeMenuItem = item.value || item;
+        layoutState.activeMenuItem = item.value || item;
+    };
+
+    const setMenuMode = (mode) => {
+        layoutConfig.menuMode = mode;
+        settingService.setMenuMode(mode);
+    };
+
+    const toggleDarkMode = () => {
+        if (!document.startViewTransition) {
+            executeDarkModeToggle();
+
+            return;
+        }
+
+        document.startViewTransition(() => executeDarkModeToggle(event));
+    };
+
+    const switchOnDarkMode = () => {
+        if (isDarkTheme.value) {
+            document.documentElement.classList.toggle('app-dark');
+        }
+    };
+
+    const executeDarkModeToggle = () => {
+        const useDarkMode = !layoutConfig.darkTheme;
+        settingService.setUseDarkMode(useDarkMode);
+        layoutConfig.darkTheme = useDarkMode;
+        document.documentElement.classList.toggle('app-dark');
     };
 
     const onMenuToggle = () => {
@@ -46,9 +81,35 @@ export function useLayout() {
         }
     };
 
+    const resetMenu = () => {
+        layoutState.overlayMenuActive = false;
+        layoutState.staticMenuMobileActive = false;
+        layoutState.menuHoverActive = false;
+    };
+
     const isSidebarActive = computed(() => layoutState.overlayMenuActive || layoutState.staticMenuMobileActive);
 
     const isDarkTheme = computed(() => layoutConfig.darkTheme);
 
-    return { layoutConfig: toRefs(layoutConfig), layoutState: toRefs(layoutState), setScale, onMenuToggle, isSidebarActive, isDarkTheme, setActiveMenuItem };
+    const getPrimary = computed(() => layoutConfig.primary);
+
+    const getSurface = computed(() => layoutConfig.surface);
+
+    return {
+        layoutConfig: readonly(layoutConfig),
+        layoutState: readonly(layoutState),
+        onMenuToggle,
+        isSidebarActive,
+        isDarkTheme,
+        getPrimary,
+        getSurface,
+        setActiveMenuItem,
+        toggleDarkMode,
+        switchOnDarkMode,
+        setPrimary,
+        setSurface,
+        setPreset,
+        resetMenu,
+        setMenuMode
+    };
 }

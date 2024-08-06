@@ -4,6 +4,7 @@ import io.github.jonaskahn.constants.Jwt
 import io.github.jonaskahn.constants.RedisNameSpace
 import io.github.jonaskahn.entities.enums.Status
 import io.github.jonaskahn.repositories.UserRepository
+import io.github.jonaskahn.services.user.UserInvalidPasswordException
 import io.github.jonaskahn.services.user.UserLockedException
 import io.github.jonaskahn.services.user.UserNotFoundException
 import io.hypersistence.tsid.TSID
@@ -25,46 +26,49 @@ internal class AuthenticationServiceImpl @Inject constructor(
     private val context: Context,
     private val jedis: JedisPooled,
 ) : AuthenticationService {
-    override fun generateToken(username: String, password: String): String {
-        val users = userRepository.findByUsernameOrEmail(username) ?: throw UserNotFoundException()
-        if (users.status == Status.LOCK || users.status == Status.INACTIVATED) {
+
+    override fun generateToken(username: String, password: String, increaseExpiration: Boolean): String {
+        val user = userRepository.findByUsernameOrEmail(username, username) ?: throw UserNotFoundException()
+        if (user.status == Status.LOCK) {
             throw UserLockedException()
         }
-        if (users.status == Status.DELETED) {
+        if (user.status == Status.DELETED || user.status == Status.INACTIVATED) {
             throw UserNotFoundException()
         }
-        if (!passwordEncoder.matches(password, users.password!!)) {
-            throw UsernamePasswordException("app.users.exception.user-password-not-correct")
+        if (!passwordEncoder.matches(password, user.password!!)) {
+            throw UserInvalidPasswordException()
         }
-        val profile = CommonProfile()
-        profile.id = users.id?.toString()
-        profile.roles = users.roles.toSet()
+        val userProfile = CommonProfile()
+        userProfile.id = user.id?.toString()
+        userProfile.roles = user.roles.toSet()
 
         val jid = TSID.fast().toString()
-        profile.addAttribute(Jwt.Attribute.JTI, jid)
-        profile.addAttribute(Jwt.Attribute.UID, users.preferredUsername.toString())
+        userProfile.addAttribute(Jwt.Attribute.JTI, jid)
+        userProfile.addAttribute(Jwt.Attribute.UID, user.preferredUsername.toString())
 
-        val expirationTimeInSeconds = environment.config.getString("jwt.expiration")?.toLong() ?: 3600L
-        val expirationDate = Date(Date().time + expirationTimeInSeconds * 1000)
-        profile.addAttribute(Jwt.Attribute.EXP, expirationDate)
+        val initialExpirationTime = environment.config.getString("jwt.expiration")?.toLong() ?: 3600L
+        val expirationTimes =
+            if (increaseExpiration) (initialExpirationTime + 60 * 60 * 24 * 15) else initialExpirationTime
+        val expirationDate = Date(Date().time + expirationTimes * 1000)
+        userProfile.addAttribute(Jwt.Attribute.EXP, expirationDate)
 
-        profile.addAttribute(CommonProfileDefinition.DISPLAY_NAME, users.fullName)
+        userProfile.addAttribute(CommonProfileDefinition.DISPLAY_NAME, user.fullName)
         val jwtGenerator = JwtGenerator(
             SecretSignatureConfiguration(environment.config.getString("jwt.salt"))
         )
         jedis.setex(
             RedisNameSpace.getUserTokenExpirationKey(
-                users.preferredUsername!!.toString(),
+                user.preferredUsername!!.toString(),
                 jid
-            ), expirationTimeInSeconds, expirationDate.toString()
+            ), expirationTimes, expirationDate.toString()
         )
-        return jwtGenerator.generate(profile)
+        return jwtGenerator.generate(userProfile)
     }
 
     override fun logout() {
-        val profile = context.getUser<BasicUserProfile>()!!
-        val jid = profile.getAttribute(Jwt.Attribute.JTI).toString()
-        val uid = profile.getAttribute(Jwt.Attribute.UID).toString()
+        val userProfile = context.getUser<BasicUserProfile>()!!
+        val jid = userProfile.getAttribute(Jwt.Attribute.JTI).toString()
+        val uid = userProfile.getAttribute(Jwt.Attribute.UID).toString()
         val redisKey = RedisNameSpace.getUserTokenExpirationKey(uid, jid)
         jedis.del(redisKey)
     }

@@ -1,41 +1,15 @@
 ## What's news?
-- I formatted all the code with prettier >,,,< 
-- Now `App Config` will store setting permanently ( to local storage ) to avoid theme reload everytime F5 hit
-- I added [`Vue Loading Overlay`](https://www.npmjs.com/package/vue-loading-overlay) to replace the `removed loading` from Sakai
-- Add some transitions
-- I will try to keep-track with Sakai Vue for every new release.
 
-## Todo
-- [x] i18n support
+- [x] Code is formatted.
+- [x] Now `App Config` will store setting permanently ( to local storage ) to avoid theme reload everytime F5 hit
+- [x] Add [`Vue Loading Overlay`](https://www.npmjs.com/package/vue-loading-overlay) to replace the `removed loading` from Sakai
+- [x] Add transitions
+- [x] i18n/locale support
+- [x] Route guard
+- [x] Add service API with `axios`
 
--------------------------------------
+## Also read
 
-This template should help get you started developing with Vue 3 in Vite.
+Sakai is an application template for Vue based on the [create-vue](https://github.com/vuejs/create-vue), the recommended way to start a Vite-powered Vue projects.
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+Visit the [documentation](https://enhanced-sakai-vue.vercel.app/#/documentation) to get started.

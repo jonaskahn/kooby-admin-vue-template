@@ -1,13 +1,12 @@
 <script setup>
-import { computed, watch, ref } from 'vue';
-import AppTopbar from './AppTopbar.vue';
+import { useLayout } from '@/layout/composables/layout';
+import { computed, ref, watch } from 'vue';
 import AppFooter from './AppFooter.vue';
 import AppSidebar from './AppSidebar.vue';
-import AppConfig from './AppConfig.vue';
-import { useLayout } from '@/layout/composables/layout';
+import AppTopbar from './AppTopbar.vue';
 import { useRoute } from 'vue-router';
 
-const { layoutConfig, layoutState, isSidebarActive } = useLayout();
+const { layoutConfig, layoutState, isSidebarActive, resetMenu } = useLayout();
 
 const outsideClickListener = ref(null);
 
@@ -21,23 +20,18 @@ watch(isSidebarActive, (newVal) => {
 
 const containerClass = computed(() => {
     return {
-        'layout-theme-light': layoutConfig.darkTheme.value === 'light',
-        'layout-theme-dark': layoutConfig.darkTheme.value === 'dark',
-        'layout-overlay': layoutConfig.menuMode.value === 'overlay',
-        'layout-static': layoutConfig.menuMode.value === 'static',
-        'layout-static-inactive': layoutState.staticMenuDesktopInactive.value && layoutConfig.menuMode.value === 'static',
-        'layout-overlay-active': layoutState.overlayMenuActive.value,
-        'layout-mobile-active': layoutState.staticMenuMobileActive.value,
-        'p-ripple-disabled': layoutConfig.ripple.value === false
+        'layout-overlay': layoutConfig.menuMode === 'overlay',
+        'layout-static': layoutConfig.menuMode === 'static',
+        'layout-static-inactive': layoutState.staticMenuDesktopInactive && layoutConfig.menuMode === 'static',
+        'layout-overlay-active': layoutState.overlayMenuActive,
+        'layout-mobile-active': layoutState.staticMenuMobileActive
     };
 });
 const bindOutsideClickListener = () => {
     if (!outsideClickListener.value) {
         outsideClickListener.value = (event) => {
             if (isOutsideClicked(event)) {
-                layoutState.overlayMenuActive.value = false;
-                layoutState.staticMenuMobileActive.value = false;
-                layoutState.menuHoverActive.value = false;
+                resetMenu();
             }
         };
         document.addEventListener('click', outsideClickListener.value);
@@ -63,27 +57,24 @@ const key = computed(() => {
 </script>
 
 <template>
-    <div class="layout-wrapper" :class="containerClass">
-        <Toast />
-        <app-topbar></app-topbar>
-        <div class="layout-sidebar">
+    <div>
+        <div :class="containerClass" class="layout-wrapper">
+            <app-topbar></app-topbar>
             <app-sidebar></app-sidebar>
-        </div>
-        <div class="layout-main-container">
-            <div class="layout-main">
-                <router-view v-slot="{ Component }">
-                    <transition mode="out-in" name="fade-transform">
-                        <div :key="key">
-                            <component :is="Component"></component>
-                        </div>
-                    </transition>
-                </router-view>
+            <div class="layout-main-container">
+                <div class="layout-main">
+                    <router-view v-slot="{ Component }">
+                        <transition :duration="500" mode="out-in" name="fade-transform">
+                            <div :key="key">
+                                <component :is="Component"></component>
+                            </div>
+                        </transition>
+                    </router-view>
+                </div>
+                <app-footer></app-footer>
             </div>
-            <app-footer></app-footer>
+            <div class="layout-mask animate-fadein"></div>
         </div>
-        <app-config></app-config>
-        <div class="layout-mask"></div>
+        <Toast />
     </div>
 </template>
-
-<style lang="scss" scoped></style>

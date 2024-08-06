@@ -15,7 +15,7 @@ internal class BeanValidatorImpl @Inject constructor(
         val result = validator.validate(obj)
         if (result.isEmpty()) return
         val acceptLanguage: String? = context.header("Accept-Language").valueOrNull()
-        val data = result.reversed().map { Language.of(acceptLanguage, it.message, arrayOf<String>()) }
+        val data = result.reversed().mapNotNull { Language.of(acceptLanguage, it.message, arrayOf<String>()) }
         throw ValidationException(data)
     }
 }

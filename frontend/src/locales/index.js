@@ -1,38 +1,51 @@
 import { createI18n } from 'vue-i18n';
-import GlobalSettingService from '@/service/GlobalSettingService';
-import en from '@/locales/en-US';
-import vi from '@/locales/vi-VN';
+import en from '@/locales/en';
+import vi from '@/locales/vi';
+import settings from '@/constants/settings';
 
-export const LOCALE_OPTIONS = [
+const LOCALE_OPTIONS = [
     {
-        label: 'Tiếng Việt',
-        value: 'vi-VN',
-        icon: 'fi fi-vn'
+        name: 'Tiếng Việt',
+        value: 'vi',
+        code: 'VN'
     },
 
     {
-        label: 'English',
-        value: 'en-US',
-        icon: 'fi fi-us'
+        name: 'English',
+        value: 'en',
+        code: 'US'
     }
 ];
 
-const defaultLocale = GlobalSettingService.instance.getCurrentLocale();
+function getCurrentLocale() {
+    return localStorage.getItem(settings.CURRENT_LOCALE) || import.meta.env.VITE_DEFAULT_LOCALE;
+}
+
+function setCurrentLocale(value) {
+    localStorage.setItem(settings.CURRENT_LOCALE, value || import.meta.env.VITE_DEFAULT_LOCALE);
+}
 
 const i18n = createI18n({
-    locale: defaultLocale,
-    fallbackLocale: 'en-US',
+    locale: getCurrentLocale(),
+    fallbackLocale: import.meta.env.VITE_FALLBACK_LOCALE,
     legacy: false,
     allowComposition: true,
     messages: {
-        'en-US': en,
-        'vi-VN': vi
+        en: en,
+        vi: vi
     }
 });
 
-export function switchLocale(locale) {
+function switchLocale(locale) {
     i18n.global.locale.value = locale;
     document.querySelector('html').setAttribute('lang', locale);
+    setCurrentLocale(locale);
+}
+
+export { LOCALE_OPTIONS, getCurrentLocale, switchLocale };
+
+export function translate(key) {
+    return i18n.global.t(key);
 }
 
 export default i18n;

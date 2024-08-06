@@ -24,7 +24,7 @@ class Language {
                 val value = bundle?.getString(key) ?: key
                 return MessageFormat.format(value, *variables)
             } catch (ignored: Exception) {
-                log.warn("Key '$key' cannot parse to language: [${language ?: "en"}]")
+                log.warn("Failed to parse message for key $key in language $language")
                 return key
             }
         }
