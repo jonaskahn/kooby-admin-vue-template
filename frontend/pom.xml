@@ -52,7 +52,7 @@
                         <goals>
                             <goal>npx</goal>
                         </goals>
-                        <phase>process-classes</phase>
+                        <phase>generate-sources</phase>
                         <configuration>
                              <arguments>vite build --mode ${environment.name}</arguments>
                         </configuration>

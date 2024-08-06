@@ -83,7 +83,7 @@ export default class BaseService {
         }
     ) {
         const res = await http.request({
-            path: spec.path,
+            url: spec.path,
             method: spec.method,
             data: spec.data
         });
