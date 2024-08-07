@@ -2,6 +2,8 @@ package io.github.jonaskahn.services.user
 
 import com.fasterxml.jackson.annotation.JsonAlias
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import io.github.jonaskahn.assistant.jackson.MessageJsonSerializer
 import io.github.jonaskahn.assistant.jackson.StringToStringCollectionDeserializer
 import io.github.jonaskahn.entities.enums.Status
 import java.io.Serializable
@@ -19,6 +21,8 @@ open class UserDto : Serializable {
             field = value
             this.statusName = value?.description
         }
+
+    @JsonSerialize(using = MessageJsonSerializer::class)
     open var statusName: String? = null
 
     @JsonDeserialize(using = StringToStringCollectionDeserializer::class)
