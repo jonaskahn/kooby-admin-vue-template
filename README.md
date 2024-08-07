@@ -34,12 +34,7 @@ Client and server should always produce and consume only type of object `Respone
 
 ```json
 {
-  "status": 200
-  |
-  4xx
-  |
-  5xx
-  `,
+  "status": 200,
   "message": "Response message from backend",
   "payload": "Additional payload"
 }
