@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import io.jooby.StatusCode
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonPropertyOrder("status", "timestamp", "payload")
+@JsonPropertyOrder("status", "message", "payload")
 class Response<T>(
     val status: Int = 0,
+    val message: String? = null,
     val payload: T? = null
 ) {
     companion object {
@@ -16,28 +17,50 @@ class Response<T>(
         }
 
         class ResponseBuilder<T> internal constructor() {
-            private var status = 0
+            private var status = 200
+            private var message: String? = null
             private var payload: T? = null
 
             fun status(status: Int) = apply {
                 this.status = status
             }
 
-            fun payload(payload: T) = apply {
+            fun message(message: String?) = apply {
+                this.message = message
+            }
+
+            fun payload(payload: T?) = apply {
                 this.payload = payload
             }
 
             fun build(): Response<T> {
-                return Response(status, payload)
+                return Response(status, message, payload)
             }
 
             override fun toString(): String {
-                return "Response.ResponseBuilder(status=$status, payload=$payload)"
+                return "ResponseBuilder(status=$status, message=$message, payload=$payload)"
             }
+
         }
 
-        fun <T> ok(payload: T): Response<T> {
+        fun ok(): Response<String> {
+            return builder<String>()
+                .message(Language.of("app.common.message.success"))
+                .status(StatusCode.OK.value())
+                .build()
+        }
+
+        fun <T> ok(payload: T?): Response<T> {
             return builder<T>()
+                .message(Language.of("app.common.message.success"))
+                .status(StatusCode.OK.value())
+                .payload(payload)
+                .build()
+        }
+
+        fun <T> ok(message: String?, payload: T?): Response<T> {
+            return builder<T>()
+                .message(Language.of(message))
                 .status(StatusCode.OK.value())
                 .payload(payload)
                 .build()
@@ -47,13 +70,14 @@ class Response<T>(
         fun fail(message: String?, code: StatusCode = StatusCode.BAD_REQUEST): Response<String> {
             return builder<String>()
                 .status(code.value())
-                .payload(message ?: "")
+                .message(Language.of(message))
                 .build()
         }
 
         fun fail(payload: Any?, code: StatusCode = StatusCode.BAD_REQUEST): Response<Any> {
             return builder<Any>()
                 .status(code.value())
+                .message(Language.of("app.common.message.failed"))
                 .payload(payload ?: "")
                 .build()
         }

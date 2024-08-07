@@ -1,8 +1,7 @@
 import BaseService from '@/service/BaseService';
 import DEFAULTS from '@/constants/app';
 import useAuthStore from '@/store/authStore';
-import API from "@/constants/api";
-import logger from "@/common/logger";
+import API from '@/constants/api';
 
 const authStore = useAuthStore();
 
@@ -31,7 +30,7 @@ export default class AuthService extends BaseService {
     #updateAccessTokenInfo(data) {
         localStorage.setItem(DEFAULTS.ACCESS.TOKEN, data);
 
-        const token = JSON.parse(atob(data.split(".")[1]));
+        const token = JSON.parse(atob(data.split('.')[1]));
         localStorage.setItem(DEFAULTS.ACCESS.EXPIRATION, token['exp']);
         authStore.updateExpiration();
         authStore.updatePermission();
