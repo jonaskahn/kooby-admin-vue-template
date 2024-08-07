@@ -32,6 +32,8 @@ docker compose -f dev.compose.yaml up -d
 
 Client and server should always produce and consume only type of object `Respone`:
 
+- **Success**
+
 ```json
 {
   "status": 200,
@@ -39,3 +41,11 @@ Client and server should always produce and consume only type of object `Respone
   "payload": "Additional payload"
 }
 ```
+
+- **Error**
+
+```json
+{
+  "status": 4xx,
+  "message": "Response message from backend"
+}
