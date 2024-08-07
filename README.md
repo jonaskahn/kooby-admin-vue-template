@@ -16,7 +16,7 @@
 ### 1. Run database
 
 ```shell
-docker compose -f dev.compose.yaml up -d
+docker compose -f compose/dev.compose.yaml up -d
 ```
 
 ### 2. [Develop with intelliJ](https://jooby.io/usage/)
