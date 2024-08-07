@@ -1,4 +1,5 @@
-create or replace table users
+create
+or replace table users
 (
     id                 bigint auto_increment,
     username           varchar(128)                          not null,
@@ -23,24 +24,22 @@ create or replace table users
 );
 
 INSERT INTO users
-    (id,
-     username,
-     preferred_username,
-     email,
-     full_name,
-     password,
-     status,
-     roles)
-VALUES
-    ( 1,
-      'admin@localhost',
-      602049386575465522,
-      'admin@localhost',
-      'admin',
-      '$2a$12$xIwOx5Yh/V0TtWcq/.VROunfYIQz2hpiEien6u7IrJvqeiGOX7yeC',
-      1,
-      '["app:user", "app:admin"]'
-    );
+(id,
+ username,
+ preferred_username,
+ email,
+ full_name,
+ password,
+ status,
+ roles)
+VALUES (1,
+        'admin@localhost',
+        602049386575465522,
+        'admin@localhost',
+        'admin',
+        '$2a$12$xIwOx5Yh/V0TtWcq/.VROunfYIQz2hpiEien6u7IrJvqeiGOX7yeC',
+        1,
+        '["app:user", "app:admin"]');
 
 ALTER TABLE users AUTO_INCREMENT = 1000;
 

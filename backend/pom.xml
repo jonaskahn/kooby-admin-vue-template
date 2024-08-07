@@ -11,13 +11,13 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>api</artifactId>
+    <artifactId>admin</artifactId>
     <name>ADMIN API</name>
     <properties>
         <application.class>io.github.jonaskahn.AppKt</application.class>
 
-        <jooby.version>3.2.7</jooby.version>
-        <kotlin.version>2.0.0</kotlin.version>
+        <jooby.version>3.2.8</jooby.version>
+        <kotlin.version>2.0.10</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
@@ -214,6 +214,7 @@
             </resource>
         </resources>
         <plugins>
+
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
@@ -301,7 +302,7 @@
                     <execution>
                         <phase>compile</phase>
                         <goals>
-                            <!--                            <goal>openapi</goal>-->
+                            <goal>openapi</goal>
                         </goals>
                         <configuration>
                         </configuration>
@@ -328,6 +329,16 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>

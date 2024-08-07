@@ -18,8 +18,8 @@ const login = async () => {
     let result = false;
     try {
         result = await AuthService.INSTANCE.login({
-            'email': email.value,
-            'password': password.value
+            email: email.value,
+            password: password.value
         });
         if (result) {
             await router.push({
