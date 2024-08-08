@@ -19,6 +19,8 @@ import io.jooby.exception.NotFoundException
 import io.jooby.exception.UnauthorizedException
 import io.jooby.flyway.FlywayModule
 import io.jooby.guice.GuiceModule
+import io.jooby.handler.AssetHandler
+import io.jooby.handler.AssetSource
 import io.jooby.hibernate.HibernateModule
 import io.jooby.hibernate.TransactionalRequest
 import io.jooby.hikari.HikariModule
@@ -32,6 +34,7 @@ import jakarta.persistence.NoResultException
 import org.pac4j.http.client.direct.HeaderClient
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration
 import redis.clients.jedis.JedisPooled
+import java.time.Duration
 
 class App : Kooby({
     setting()
@@ -121,7 +124,7 @@ private fun getStatusCodeAndMessage(ex: Throwable): Pair<StatusCode, Response<*>
     when (ex) {
         is LogicException -> {
             code = StatusCode.BAD_REQUEST
-            res = Response.fail(code = code, message = Language.of(ex.message, ex.variables))
+            res = Response.fail(code, ex.message, ex.variables)
         }
 
         is ValidationException -> {
@@ -131,12 +134,12 @@ private fun getStatusCodeAndMessage(ex: Throwable): Pair<StatusCode, Response<*>
 
         is NotFoundException -> {
             code = StatusCode.NOT_FOUND
-            res = Response.fail(code = code, message = Language.of("app.common.exception.notfound"))
+            res = Response.fail(code, "app.common.exception.notfound")
         }
 
         is AuthenticationException -> {
             code = StatusCode.BAD_REQUEST
-            res = Response.fail(code = code, message = Language.of(ex.message))
+            res = Response.fail(code, ex.message)
         }
 
         is AuthorizationException, is UnauthorizedException -> {
@@ -171,6 +174,7 @@ private fun getStatusCodeAndMessage(ex: Throwable): Pair<StatusCode, Response<*>
     return Pair(code, res)
 }
 
+
 fun Kooby.routes() {
     mount("/api", RouteDefinition())
 }
@@ -184,24 +188,31 @@ private class RouteDefinition : Kooby({
 })
 
 fun Kooby.web() {
-    assets("/*", "static")
+    val www = AssetSource.create(this.classLoader, "static")
+    assets(
+        "/*", AssetHandler(www)
+            .setMaxAge(Duration.ofDays(365))
+    )
 
-    get("/uikit*") {
+    get("/uikit/*") {
         ctx.forward("/")
     }
-    get("/blocks*") {
+    get("/blocks/*") {
         ctx.forward("/")
     }
-    get("/utilities*") {
+    get("/utilities/*") {
         ctx.forward("/")
     }
-    get("/page*") {
+    get("/page/*") {
         ctx.forward("/")
     }
     get("/landing") {
         ctx.forward("/")
     }
     get("/documentation") {
+        ctx.forward("/")
+    }
+    get("/auth/*") {
         ctx.forward("/")
     }
 

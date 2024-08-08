@@ -58,23 +58,27 @@ class Response<T>(
                 .build()
         }
 
-        fun <T> ok(message: String?, payload: T?): Response<T> {
+        fun <T> ok(payload: T?, message: String?, vararg params: Array<out Any?>): Response<T> {
             return builder<T>()
-                .message(Language.of(message))
+                .message(Language.of(message, params))
                 .status(StatusCode.OK.value())
                 .payload(payload)
                 .build()
         }
 
 
-        fun fail(message: String?, code: StatusCode = StatusCode.BAD_REQUEST): Response<String> {
+        fun fail(
+            code: StatusCode = StatusCode.BAD_REQUEST,
+            message: String?,
+            vararg params: Array<out Any?>
+        ): Response<String> {
             return builder<String>()
                 .status(code.value())
-                .message(Language.of(message))
+                .message(Language.of(message, params))
                 .build()
         }
 
-        fun fail(payload: Any?, code: StatusCode = StatusCode.BAD_REQUEST): Response<Any> {
+        fun fail(code: StatusCode = StatusCode.BAD_REQUEST, payload: Any?): Response<Any> {
             return builder<Any>()
                 .status(code.value())
                 .message(Language.of("app.common.message.failed"))
