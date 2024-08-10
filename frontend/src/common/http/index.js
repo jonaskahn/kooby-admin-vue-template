@@ -78,11 +78,13 @@ function createInstance(headers = {}) {
  * JSON response:
  * - Success: {
  *     status: 200,
+ *     message: string
  *     payload: object
  * }
  * - Error: {
  *     status: 4xx || 5xx,
- *     payload: string message
+ *     message: string message,
+ *     payload: object || null
  * }
  * @param res
  * @returns {Promise<Awaited<ResponseData>>}
