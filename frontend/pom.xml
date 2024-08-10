@@ -52,9 +52,8 @@
                         <goals>
                             <goal>npx</goal>
                         </goals>
-                        <phase>generate-sources</phase>
                         <configuration>
-                             <arguments>vite build --mode ${environment.name}</arguments>
+                            <arguments>vite build --mode ${environment.name}</arguments>
                         </configuration>
                     </execution>
                 </executions>

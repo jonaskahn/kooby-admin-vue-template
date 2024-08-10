@@ -18,7 +18,7 @@ class AuthController @Inject constructor(
     fun generateToken(request: GenerateTokenRequest): Response<String> {
         beanValidator.validate(request)
         val token = authenticationService.generateToken(request.username!!, request.password!!, request.rememberMe)
-        return Response.ok("app.common.message.welcome", token)
+        return Response.ok(token, "app.common.message.welcome")
     }
 
     @DELETE("/secure/auth/logout")
