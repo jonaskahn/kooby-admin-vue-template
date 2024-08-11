@@ -12,4 +12,8 @@ interface BaseRepository<Entity : BaseEntity, ID> {
     fun deleteById(id: ID)
 
     fun findById(id: ID): Entity?
+
+    fun findAll(): List<Entity>
+
+    fun findWithPagination(offset: Int, limit: Int): List<Entity>
 }

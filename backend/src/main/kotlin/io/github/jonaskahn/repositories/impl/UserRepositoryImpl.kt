@@ -1,8 +1,9 @@
-package io.github.jonaskahn.repositories
+package io.github.jonaskahn.repositories.impl
 
 import io.github.jonaskahn.assistant.query.JpaQueryExecutor
 import io.github.jonaskahn.entities.User
 import io.github.jonaskahn.entities.enums.Status
+import io.github.jonaskahn.repositories.UserRepository
 import io.github.jonaskahn.services.user.UserDto
 import io.jooby.Context
 import jakarta.inject.Inject

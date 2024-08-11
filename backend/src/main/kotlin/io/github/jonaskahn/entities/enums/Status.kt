@@ -19,7 +19,7 @@ enum class Status(@get:JsonValue val id: Int, val description: String) {
 
     object Code {
         const val ACTIVATED = 1
-        const val INACTIVATED = 2
+        const val INACTIVATED = 0
         const val LOCK = 3
         const val DELETED = 9
     }

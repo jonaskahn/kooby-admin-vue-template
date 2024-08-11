@@ -5,7 +5,9 @@ import io.github.jonaskahn.assistant.Language
 import io.github.jonaskahn.assistant.Response
 import io.github.jonaskahn.controllers.HealthController
 import io.github.jonaskahn.controllers.TestRoleController
+import io.github.jonaskahn.controllers.address.AddressController
 import io.github.jonaskahn.controllers.auth.AuthController
+import io.github.jonaskahn.controllers.patientrequest.PatientRequestController
 import io.github.jonaskahn.controllers.user.UserController
 import io.github.jonaskahn.exception.*
 import io.github.jonaskahn.extensions.JedisModule
@@ -185,6 +187,8 @@ private class RouteDefinition : Kooby({
     mvc(AuthController::class.java)
     mvc(UserController::class.java)
     mvc(TestRoleController::class.java)
+    mvc(AddressController::class.java)
+    mvc(PatientRequestController::class.java)
 })
 
 fun Kooby.web() {
