@@ -4,6 +4,7 @@ import com.nimbusds.jwt.JWT
 import io.github.jonaskahn.constants.Jwt
 import io.github.jonaskahn.constants.RedisNameSpace
 import io.github.jonaskahn.exception.AuthorizationException
+import io.github.jonaskahn.middlewares.context.UserContextHolder
 import org.pac4j.core.context.WebContext
 import org.pac4j.core.context.session.SessionStore
 import org.pac4j.core.credentials.TokenCredentials
@@ -26,5 +27,6 @@ class AdvancedJwtAuthenticator(private val redis: JedisPooled, signatureConfigur
             throw AuthorizationException()
         }
         super.createJwtProfile(credentials, jwt, context, sessionStore)
+        UserContextHolder.setCurrentUserInfo(credentials.userProfile)
     }
 }

@@ -3,15 +3,14 @@ package io.github.jonaskahn.services.authen
 import io.github.jonaskahn.constants.Jwt
 import io.github.jonaskahn.constants.RedisNameSpace
 import io.github.jonaskahn.entities.enums.Status
+import io.github.jonaskahn.middlewares.context.UserContextHolder
 import io.github.jonaskahn.repositories.UserRepository
 import io.github.jonaskahn.services.user.UserInvalidPasswordException
 import io.github.jonaskahn.services.user.UserLockedException
 import io.github.jonaskahn.services.user.UserNotFoundException
 import io.hypersistence.tsid.TSID
-import io.jooby.Context
 import io.jooby.Environment
 import jakarta.inject.Inject
-import org.pac4j.core.profile.BasicUserProfile
 import org.pac4j.core.profile.CommonProfile
 import org.pac4j.core.profile.definition.CommonProfileDefinition
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration
@@ -23,7 +22,6 @@ internal class AuthenticationServiceImpl @Inject constructor(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val environment: Environment,
-    private val context: Context,
     private val jedis: JedisPooled,
 ) : AuthenticationService {
 
@@ -66,10 +64,11 @@ internal class AuthenticationServiceImpl @Inject constructor(
     }
 
     override fun logout() {
-        val userProfile = context.getUser<BasicUserProfile>()!!
-        val jid = userProfile.getAttribute(Jwt.Attribute.JTI).toString()
-        val uid = userProfile.getAttribute(Jwt.Attribute.UID).toString()
-        val redisKey = RedisNameSpace.getUserTokenExpirationKey(uid, jid)
-        jedis.del(redisKey)
+        UserContextHolder.getCurrentUser()?.let { userProfile ->
+            val jid = userProfile.getAttribute(Jwt.Attribute.JTI).toString()
+            val uid = userProfile.getAttribute(Jwt.Attribute.UID).toString()
+            val redisKey = RedisNameSpace.getUserTokenExpirationKey(uid, jid)
+            jedis.del(redisKey)
+        }
     }
 }
