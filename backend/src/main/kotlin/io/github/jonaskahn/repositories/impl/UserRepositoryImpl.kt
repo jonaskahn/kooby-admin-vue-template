@@ -5,7 +5,6 @@ import io.github.jonaskahn.constants.Defaults
 import io.github.jonaskahn.entities.User
 import io.github.jonaskahn.entities.enums.Status
 import io.github.jonaskahn.services.user.UserDto
-import io.jooby.Context
 import jakarta.inject.Inject
 import jakarta.persistence.EntityManager
 import org.apache.commons.lang3.StringUtils
@@ -15,7 +14,8 @@ class UserRepositoryImpl @Inject constructor(
     override val entityManager: EntityManager
 ) : AbstractBaseRepository(entityManager), UserRepository {
     override fun create(user: User): User {
-        TODO("Not yet implemented")
+       entityManager.persist(user)
+        return user
     }
 
     override fun findByUsernameOrEmail(username: String, email: String): User? {

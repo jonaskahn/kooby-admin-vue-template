@@ -13,4 +13,6 @@ interface PatientRequestRepository {
     fun findByKeywordWithPagination(keyword: String, offset: Int, limit: Int): PaginationResult<PatientRequestDto>
 
     fun countByKeyword(keyword: String): Long
+
+    fun searchByKeywordAndStateAndOffset(keyword: String, state: Collection<Int>, offset: Int): Collection<PatientRequestDto>
 }

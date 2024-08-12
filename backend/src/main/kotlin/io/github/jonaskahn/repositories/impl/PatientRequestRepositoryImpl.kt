@@ -69,4 +69,12 @@ class PatientRequestRepositoryImpl @Inject constructor(
     override fun countByKeyword(keyword: String): Long {
         TODO("Not yet implemented")
     }
+
+    override fun searchByKeywordAndStateAndOffset(
+        keyword: String,
+        state: Collection<Int>,
+        offset: Int
+    ): Collection<PatientRequestDto> {
+        TODO("Not yet implemented")
+    }
 }

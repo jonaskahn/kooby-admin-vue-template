@@ -4,7 +4,6 @@ import io.github.jonaskahn.entities.District
 import io.github.jonaskahn.entities.enums.Status
 import io.github.jonaskahn.repositories.AbstractBaseRepository
 import io.github.jonaskahn.repositories.DistrictRepository
-import io.jooby.Context
 import jakarta.inject.Inject
 import jakarta.persistence.EntityManager
 
