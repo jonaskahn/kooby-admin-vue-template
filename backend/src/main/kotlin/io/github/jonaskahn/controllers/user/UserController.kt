@@ -1,5 +1,6 @@
 package io.github.jonaskahn.controllers.user
 
+import io.github.jonaskahn.assistant.PageData
 import io.github.jonaskahn.services.user.UserDto
 import io.github.jonaskahn.services.user.UserService
 import io.jooby.annotation.GET
@@ -23,5 +24,10 @@ class UserController @Inject constructor(private val userService: UserService) {
     @POST("/user/register")
     fun register(request: UserRegisterRequest) {
         userService.createUser(request)
+    }
+
+    @POST("/user/search")
+    fun search(request: UserSearchRequest): PageData<UserDto> {
+        return userService.search(request.keyword, request.statuses, request.pageNo)
     }
 }

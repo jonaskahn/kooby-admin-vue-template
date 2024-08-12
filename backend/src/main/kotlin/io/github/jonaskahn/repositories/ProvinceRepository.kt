@@ -5,5 +5,7 @@ import io.github.jonaskahn.entities.Province
 import io.github.jonaskahn.repositories.impl.ProvinceRepositoryImpl
 
 @ImplementedBy(ProvinceRepositoryImpl::class)
-interface ProvinceRepository: BaseRepository<Province, Long> {
+interface ProvinceRepository {
+
+    fun findAll(): List<Province>
 }

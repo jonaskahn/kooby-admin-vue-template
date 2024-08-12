@@ -1,9 +1,8 @@
-package io.github.jonaskahn.repositories.impl
+package io.github.jonaskahn.repositories
 
 import io.github.jonaskahn.assistant.query.JpaQueryExecutor
 import io.github.jonaskahn.entities.User
 import io.github.jonaskahn.entities.enums.Status
-import io.github.jonaskahn.repositories.UserRepository
 import io.github.jonaskahn.services.user.UserDto
 import io.jooby.Context
 import jakarta.inject.Inject
@@ -11,9 +10,11 @@ import jakarta.persistence.EntityManager
 import org.slf4j.LoggerFactory
 
 class UserRepositoryImpl @Inject constructor(
-    private val entityManager: EntityManager,
-    context: Context
-) : BaseRepositoryImpl<User, Long>(entityManager, User::class.java, context), UserRepository {
+    override val entityManager: EntityManager
+) : AbstractBaseRepository(entityManager), UserRepository {
+    override fun create(user: User): User {
+        TODO("Not yet implemented")
+    }
 
     override fun findByUsernameOrEmail(username: String, email: String): User? {
         val query =
@@ -70,6 +71,18 @@ class UserRepositoryImpl @Inject constructor(
             .with(query, mutableMapOf("preferredUsername" to preferredUsername))
             .map(UserDto::class.java)
             .getSingleResult()
+    }
+
+    override fun countByKeywordAndStatus(keyword: String?, status: Collection<Int>): Long {
+        TODO("Not yet implemented")
+    }
+
+    override fun searchByKeywordAndStatusAndOffset(
+        keyword: String?,
+        status: Collection<Int>,
+        offset: Long
+    ): Collection<UserDto> {
+        TODO("Not yet implemented")
     }
 
 

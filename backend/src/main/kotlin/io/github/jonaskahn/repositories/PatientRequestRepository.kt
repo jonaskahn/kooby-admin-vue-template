@@ -7,7 +7,8 @@ import io.github.jonaskahn.repositories.impl.PatientRequestRepositoryImpl
 import io.github.jonaskahn.services.patientrequest.PatientRequestDto
 
 @ImplementedBy(PatientRequestRepositoryImpl::class)
-interface PatientRequestRepository: BaseRepository<PatientRequest, Long> {
+interface PatientRequestRepository {
+    fun create(entity: PatientRequest)
 
     fun findByKeywordWithPagination(keyword: String, offset: Int, limit: Int): PaginationResult<PatientRequestDto>
 

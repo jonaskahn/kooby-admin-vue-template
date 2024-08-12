@@ -1,23 +1,36 @@
 package io.github.jonaskahn.services.user
 
+import io.github.jonaskahn.assistant.PageData
 import io.github.jonaskahn.constants.Jwt
 import io.github.jonaskahn.controllers.user.UserRegisterRequest
 import io.github.jonaskahn.entities.User
 import io.github.jonaskahn.entities.enums.Status
 import io.github.jonaskahn.exception.ShouldNeverOccurException
+import io.github.jonaskahn.middlewares.context.UserContextHolder
 import io.github.jonaskahn.repositories.UserRepository
+import io.github.jonaskahn.services.PagingService
 import io.github.jonaskahn.services.authen.PasswordEncoder
 import io.hypersistence.tsid.TSID
-import io.jooby.Context
 import jakarta.inject.Inject
-import org.pac4j.core.profile.BasicUserProfile
-import org.pac4j.core.profile.UserProfile
 
 internal class UserServiceImpl @Inject constructor(
     private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder,
-    private val context: Context
-) : UserService {
+    private val passwordEncoder: PasswordEncoder
+) : UserService, PagingService() {
+
+    override fun search(
+        keyword: String?,
+        statuses: Collection<Status>,
+        pageNo: Long
+    ): PageData<UserDto> {
+        return super.search(
+            statuses,
+            pageNo,
+            { status -> userRepository.countByKeywordAndStatus(keyword, status) },
+            { status, offset -> userRepository.searchByKeywordAndStatusAndOffset(keyword, status, offset) }
+        )
+    }
+
 
     override fun createUser(request: UserRegisterRequest) {
         if (userRepository.existsByUsernameOrEmail(request.username, request.email)) {
@@ -34,7 +47,7 @@ internal class UserServiceImpl @Inject constructor(
     }
 
     override fun getCurrentUserInfo(): UserDto {
-        val userProfile = context.getUser<UserProfile>()
+        val userProfile = UserContextHolder.getCurrentUser()
         val preferredUsername =
             userProfile?.getAttribute(Jwt.Attribute.UID)?.toString() ?: throw ShouldNeverOccurException()
         val user = userRepository.findActivatedUserByPreferredUsername(preferredUsername.toLong())
@@ -43,7 +56,7 @@ internal class UserServiceImpl @Inject constructor(
     }
 
     override fun getCurrentUserInfoWithExecutor(): UserDto {
-        val userProfile = context.getUser<BasicUserProfile>()
+        val userProfile = UserContextHolder.getCurrentUser()
         val preferredUsername =
             userProfile?.getAttribute(Jwt.Attribute.UID)?.toString() ?: throw ShouldNeverOccurException()
         return userRepository.findCustomActivatedUserByPreferredUsername(preferredUsername.toLong())

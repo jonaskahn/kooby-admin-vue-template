@@ -7,8 +7,7 @@ import jakarta.inject.Inject
 
 class AddressServiceImpl @Inject constructor(
     private val provinceRepository: ProvinceRepository,
-    private val districtRepository: DistrictRepository,
-    private val context: Context
+    private val districtRepository: DistrictRepository
 ): AddressService {
     override fun getAllProvinces(): List<ProvinceDto> {
         return provinceRepository.findAll()

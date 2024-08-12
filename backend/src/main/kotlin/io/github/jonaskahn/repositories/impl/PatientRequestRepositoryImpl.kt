@@ -3,6 +3,7 @@ package io.github.jonaskahn.repositories.impl
 import io.github.jonaskahn.controllers.patientrequest.PaginationResult
 import io.github.jonaskahn.entities.PatientRequest
 import io.github.jonaskahn.entities.enums.Status
+import io.github.jonaskahn.repositories.AbstractBaseRepository
 import io.github.jonaskahn.repositories.PatientRequestRepository
 import io.github.jonaskahn.services.patientrequest.PatientRequestDto
 import io.github.jonaskahn.services.patientrequest.PatientRequestEntityToDtoMapper
@@ -11,9 +12,12 @@ import jakarta.inject.Inject
 import jakarta.persistence.EntityManager
 
 class PatientRequestRepositoryImpl @Inject constructor(
-    private val entityManager: EntityManager,
-    context: Context
-): BaseRepositoryImpl<PatientRequest, Long>(entityManager, PatientRequest::class.java, context) , PatientRequestRepository {
+    override val entityManager: EntityManager
+): AbstractBaseRepository(entityManager) , PatientRequestRepository {
+    override fun create(entity: PatientRequest) {
+        entityManager.persist(entity)
+    }
+
     override fun findByKeywordWithPagination(keyword: String, offset: Int, limit: Int): PaginationResult<PatientRequestDto> {
         val likeKeyword = "%${keyword.trim()}%"
 
@@ -63,14 +67,6 @@ class PatientRequestRepositoryImpl @Inject constructor(
 
 
     override fun countByKeyword(keyword: String): Long {
-        TODO("Not yet implemented")
-    }
-
-    override fun deleteById(id: Long) {
-        TODO("Not yet implemented")
-    }
-
-    override fun findById(id: Long): PatientRequest? {
         TODO("Not yet implemented")
     }
 }
