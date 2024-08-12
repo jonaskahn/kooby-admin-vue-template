@@ -4,6 +4,7 @@ import io.github.jonaskahn.assistant.query.JpaQueryExecutor
 import io.github.jonaskahn.constants.Defaults
 import io.github.jonaskahn.entities.User
 import io.github.jonaskahn.entities.enums.Status
+import io.github.jonaskahn.repositories.AbstractBaseRepository
 import io.github.jonaskahn.repositories.UserRepository
 import io.github.jonaskahn.services.user.UserDto
 import jakarta.inject.Inject
@@ -13,7 +14,12 @@ import org.slf4j.LoggerFactory
 
 class UserRepositoryImpl @Inject constructor(
     override val entityManager: EntityManager
-) : BaseRepositoryImpl<User, Long>(entityManager, User::class.java), UserRepository {
+) : AbstractBaseRepository(entityManager), UserRepository {
+
+    override fun create(user: User): User {
+        entityManager.persist(user)
+        return user
+    }
 
     override fun findByUsernameOrEmail(username: String, email: String): User? {
         val query =

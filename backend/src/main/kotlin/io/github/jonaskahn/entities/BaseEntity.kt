@@ -1,5 +1,6 @@
 package io.github.jonaskahn.entities
 
+import io.github.jonaskahn.middlewares.context.UserContextHolder
 import jakarta.persistence.*
 import org.hibernate.annotations.ColumnDefault
 import java.time.Instant
@@ -25,6 +26,8 @@ open class BaseEntity {
 
     @PrePersist
     fun onPrePersist() {
+        this.createdBy = UserContextHolder.getCurrentUserId()
+        this.updatedBy = UserContextHolder.getCurrentUserId()
         this.createdAt = Instant.now()
         this.updatedAt = Instant.now()
     }
@@ -32,5 +35,6 @@ open class BaseEntity {
     @PreUpdate
     fun onPreUpdate() {
         this.updatedAt = Instant.now()
+        this.updatedBy = UserContextHolder.getCurrentUserId()
     }
 }

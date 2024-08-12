@@ -6,7 +6,9 @@ import io.github.jonaskahn.repositories.impl.UserRepositoryImpl
 import io.github.jonaskahn.services.user.UserDto
 
 @ImplementedBy(UserRepositoryImpl::class)
-interface UserRepository : BaseRepository<User, Long> {
+interface UserRepository {
+
+    fun create(user: User): User
 
     fun findByUsernameOrEmail(username: String, email: String): User?
 
