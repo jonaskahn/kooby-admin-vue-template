@@ -5,21 +5,29 @@ import io.github.jonaskahn.entities.BaseEntity
 import io.github.jonaskahn.middlewares.context.UserContextHolder
 import io.github.jonaskahn.repositories.BaseRepository
 import jakarta.persistence.EntityManager
+import org.slf4j.LoggerFactory
 
 abstract class BaseRepositoryImpl<Entity : BaseEntity, ID>(
     open val entityManager: EntityManager,
     private val entity: Class<Entity>
 ) : BaseRepository<Entity, ID> {
 
-    override fun create(e: Entity) {
+    override fun create(e: Entity): Entity {
         e.createdBy = getCurrentLoggedUserId()
         e.updatedBy = getCurrentLoggedUserId()
         entityManager.persist(e)
+        return e
     }
 
-    override fun update(e: Entity) {
+    override fun update(e: Entity): Entity {
         e.updatedBy = getCurrentLoggedUserId()
-        entityManager.persist(e)
+        try {
+            entityManager.merge(e)
+        } catch (e: Exception) {
+            logger.warn("Cannot do merge entity $e, try to persist instead")
+            entityManager.persist(e)
+        }
+        return e
     }
 
     private fun getCurrentLoggedUserId(): Long {
@@ -124,5 +132,9 @@ abstract class BaseRepositoryImpl<Entity : BaseEntity, ID>(
             .with(query, params)
             .map(Long::class.java)
             .count()
+    }
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(this::class.java)
     }
 }
