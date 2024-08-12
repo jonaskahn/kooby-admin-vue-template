@@ -82,13 +82,17 @@ fun Kooby.decorate() {
         LanguageContextHolder.setLanguage(acceptLanguage)
     }
     after {
-        ctx.setDefaultResponseType(MediaType.json)
         if (failure == null) {
+            ctx.setDefaultResponseType(MediaType.json)
             handleSuccess()
-        } else {
-            log.error("Something went wrong, detail", failure as Throwable)
-            handleFailure()
         }
+    }
+    error { ctx, cause, _ ->
+        log.error("Something went wrong, detail", cause)
+        val (calculatedStatusCode, data) = getStatusCodeAndMessage(cause)
+        ctx.setDefaultResponseType(MediaType.json)
+        ctx.responseCode = calculatedStatusCode
+        ctx.render(data)
     }
 }
 
@@ -109,14 +113,6 @@ private fun AfterContext.handleSuccess() {
     }
     return
 }
-
-private fun AfterContext.handleFailure() {
-    val ex = failure as Throwable
-    val (statusCode, data) = getStatusCodeAndMessage(ex)
-    ctx.responseCode = statusCode
-    ctx.render(data)
-}
-
 
 private fun getStatusCodeAndMessage(ex: Throwable): Pair<StatusCode, Response<*>> {
     val code: StatusCode?
@@ -174,18 +170,15 @@ private fun getStatusCodeAndMessage(ex: Throwable): Pair<StatusCode, Response<*>
     return Pair(code, res)
 }
 
-
 fun Kooby.routes() {
-    mount("/api", RouteDefinition())
+    mount("/api", object : Kooby({
+        install(JacksonModule(JacksonMapper.INSTANCE))
+        mvc(HealthController::class.java)
+        mvc(AuthController::class.java)
+        mvc(UserController::class.java)
+        mvc(TestRoleController::class.java)
+    }) {})
 }
-
-private class RouteDefinition : Kooby({
-    install(JacksonModule(JacksonMapper.INSTANCE))
-    mvc(HealthController::class.java)
-    mvc(AuthController::class.java)
-    mvc(UserController::class.java)
-    mvc(TestRoleController::class.java)
-})
 
 fun Kooby.web() {
     val www = AssetSource.create(this.classLoader, "static")
