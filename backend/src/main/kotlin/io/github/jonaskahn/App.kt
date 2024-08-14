@@ -183,32 +183,9 @@ fun Kooby.routes() {
 fun Kooby.web() {
     val www = AssetSource.create(this.classLoader, "static")
     assets(
-        "/*", AssetHandler(www)
+        "/*", AssetHandler("index.html", www)
             .setMaxAge(Duration.ofDays(365))
     )
-
-    get("/uikit/*") {
-        ctx.forward("/")
-    }
-    get("/blocks/*") {
-        ctx.forward("/")
-    }
-    get("/utilities/*") {
-        ctx.forward("/")
-    }
-    get("/page/*") {
-        ctx.forward("/")
-    }
-    get("/landing") {
-        ctx.forward("/")
-    }
-    get("/documentation") {
-        ctx.forward("/")
-    }
-    get("/auth/*") {
-        ctx.forward("/")
-    }
-
 }
 
 fun main(args: Array<String>) {
