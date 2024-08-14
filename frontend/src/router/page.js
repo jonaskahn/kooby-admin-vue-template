@@ -7,39 +7,57 @@ const PageSpec = {
                 title: 'page.menu-title.auth.login',
                 permissions: []
             },
-            component: () => import('@/views/pages/auth/Login.vue')
+            component: () => import('@/views/auth/Login.vue')
         }
     },
-    ACCESS: {
-        NOT_FOUND: {
-            path: '/pages/notfound',
-            name: 'notfound',
-            meta: {
-                title: 'page.menu-title.page.notfound',
-                permissions: []
-            },
-            component: () => import('@/views/pages/NotFound.vue')
-        },
-        DENIED: {
-            path: '/auth/access',
-            name: 'accessDenied',
-            meta: {
-                title: 'page.menu-title.page.access-denied',
-                permissions: []
-            },
-            component: () => import('@/views/pages/auth/Access.vue')
-        },
-        ERROR: {
-            path: '/auth/error',
+    ERROR: {
+        ERR_500: {
+            path: '/error/500',
             name: 'accessError',
             meta: {
                 title: 'page.menu-title.page.access-error',
                 permissions: []
             },
-            component: () => import('@/views/pages/auth/Error.vue')
+            component: () => import('@/views/error/500.vue')
+        },
+        ERR_404: {
+            path: '/error/404',
+            name: 'notfound',
+            meta: {
+                title: 'page.menu-title.page.notfound',
+                permissions: []
+            },
+            component: () => import('@/views/error/404.vue')
+        },
+        ERR_403: {
+            path: '/error/403',
+            name: 'accessDenied',
+            meta: {
+                title: 'page.menu-title.page.access-denied',
+                permissions: []
+            },
+            component: () => import('@/views/error/403.vue')
         }
     },
     APP: {
+        DEFAULT: {
+            path: '/:pathMatch(.*)*',
+            name: 'notfound',
+            meta: {
+                title: 'page.menu-title.page.notfound',
+                permissions: []
+            },
+            component: () => import('@/views/error/404.vue')
+        },
+        DOCUMENT: {
+            path: '/documentation',
+            name: 'documentation',
+            meta: {
+                title: 'page.menu-title.detail.documentation',
+                permissions: []
+            },
+            component: () => import('@/views/pages/Documentation.vue')
+        },
         DASHBOARD: {
             path: '/',
             name: 'dashboard',
@@ -57,24 +75,6 @@ const PageSpec = {
                 permissions: []
             },
             component: () => import('@/views/pages/Landing.vue')
-        },
-        DOCUMENT: {
-            path: '/documentation',
-            name: 'documentation',
-            meta: {
-                title: 'page.menu-title.detail.documentation',
-                permissions: []
-            },
-            component: () => import('@/views/pages/Documentation.vue')
-        },
-        EMPTY: {
-            path: '/pages/empty',
-            name: 'empty',
-            meta: {
-                title: 'page.menu-title.detail.page-empty',
-                permissions: []
-            },
-            component: () => import('@/views/pages/Empty.vue')
         },
         CRUD: {
             path: '/pages/crud',
@@ -221,8 +221,7 @@ const PageSpec = {
                 },
                 component: () => import('@/views/uikit/TimelineDoc.vue')
             }
-        },
-        PAGE: {}
+        }
     }
 };
 

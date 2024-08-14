@@ -67,11 +67,7 @@ const key = computed(() => {
             <div class="layout-main-container">
                 <div class="layout-main">
                     <router-view v-slot="{ Component }">
-                        <transition :duration="500" mode="out-in" name="fade-transform">
-                            <div :key="key">
-                                <component :is="Component"></component>
-                            </div>
-                        </transition>
+                        <component :is="Component" :key="key"></component>
                     </router-view>
                 </div>
                 <app-footer></app-footer>

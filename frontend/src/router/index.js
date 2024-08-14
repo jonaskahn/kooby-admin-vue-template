@@ -15,7 +15,6 @@ const router = createRouter({
             component: AppLayout,
             children: [
                 page.APP.DASHBOARD,
-
                 page.APP.UIKIT.FORM_LAYOUT,
                 page.APP.UIKIT.INPUT,
                 page.APP.UIKIT.BUTTON,
@@ -30,23 +29,19 @@ const router = createRouter({
                 page.APP.UIKIT.MENU,
                 page.APP.UIKIT.CHARTS,
                 page.APP.UIKIT.MISC,
-                page.APP.UIKIT.TIMELINE,
-
-                page.APP.DOCUMENT,
-                page.APP.EMPTY,
-                page.APP.DOCUMENT,
-                page.APP.CRUD
+                page.APP.UIKIT.TIMELINE
             ]
         },
-        page.APP.LANDING,
+
         page.AUTH.LOGIN,
-        page.ACCESS.NOT_FOUND,
-        page.ACCESS.ERROR,
-        page.ACCESS.DENIED
+        page.ERROR.ERR_403,
+        page.ERROR.ERR_404,
+        page.ERROR.ERR_500,
+        page.APP.DEFAULT
     ]
 });
 
-const whiteListUrl = [PageSpec.ACCESS.DENIED.name, PageSpec.ACCESS.NOT_FOUND.name, PageSpec.ACCESS.ERROR.name];
+const whiteListUrl = [PageSpec.ERROR.ERR_403.name, PageSpec.ERROR.ERR_404.name, PageSpec.ERROR.ERR_500.name];
 
 router.beforeEach(async (to, from, next) => {
     if (whiteListUrl.includes(to.name)) {
@@ -80,7 +75,7 @@ async function redirectIfValid(to, from, next) {
     } else if (hasPermission(to.meta.permissions ?? [])) {
         next();
     } else {
-        await next({ name: PageSpec.ACCESS.DENIED.name });
+        await next({ name: PageSpec.ERROR.ERR_403.name });
     }
 }
 
@@ -97,7 +92,7 @@ function containsAny(arr1, arr2) {
 
 router.afterEach(async (to) => {
     await nextTick(() => {
-        const pageTitle = translate(to.meta.title ?? to.name.toUpperCase() + '');
+        const pageTitle = translate(to.meta.title ?? 'page.menu-title.default');
         document.title = translate('page.menu-title.default') + ' - ' + pageTitle;
     });
 });
