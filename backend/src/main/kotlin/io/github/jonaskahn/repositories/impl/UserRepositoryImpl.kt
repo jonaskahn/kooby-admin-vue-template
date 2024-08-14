@@ -4,7 +4,6 @@ import io.github.jonaskahn.assistant.query.JpaQueryExecutor
 import io.github.jonaskahn.constants.Defaults
 import io.github.jonaskahn.entities.User
 import io.github.jonaskahn.entities.enums.Status
-import io.github.jonaskahn.repositories.AbstractBaseRepository
 import io.github.jonaskahn.repositories.UserRepository
 import io.github.jonaskahn.services.user.UserDto
 import jakarta.inject.Inject
@@ -12,9 +11,7 @@ import jakarta.persistence.EntityManager
 import org.apache.commons.lang3.StringUtils
 import org.slf4j.LoggerFactory
 
-class UserRepositoryImpl @Inject constructor(
-    override val entityManager: EntityManager
-) : AbstractBaseRepository(entityManager), UserRepository {
+class UserRepositoryImpl @Inject constructor(private val entityManager: EntityManager) : UserRepository {
 
     override fun create(user: User): User {
         entityManager.persist(user)
@@ -79,38 +76,49 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override fun countByKeywordAndStatus(keyword: String?, status: Collection<Int>): Long {
-        return count(true, "select count(1) from users u where 1 = 1 ") { builder, params ->
-            queryBuilderByKeywordAndStatus(keyword, builder, params, status)
-        }
+        val sqlBuilder = StringBuilder("select count(1) from users u where 1 = 1 ")
+        val params = mutableMapOf<String, Any>()
+        buildQueryWithKeywordAndStatus(keyword, sqlBuilder, params, status)
+        val query = entityManager.createQuery(sqlBuilder.toString(), Long::class.java)
+        params.forEach { (k, v) -> query.setParameter(k, v) }
+        return query.singleResult
     }
 
-    private fun queryBuilderByKeywordAndStatus(
+
+    private fun buildQueryWithKeywordAndStatus(
         keyword: String?,
-        builder: StringBuilder,
+        sqlBuilder: StringBuilder,
         params: MutableMap<String, Any>,
         status: Collection<Int>
     ) {
         if (StringUtils.isNotBlank(keyword)) {
-            builder.append(" AND (u.username like %:keyword% or u.email like %:keyword%)")
+            sqlBuilder.append(" AND (u.username like %:keyword% or u.email like %:keyword%)")
             params["keyword"] = keyword!!
         }
         if (status.isNotEmpty()) {
-            builder.append(" AND u.status in (:status)")
+            sqlBuilder.append(" AND u.status in (:status)")
             params["status"] = status
         }
     }
+
 
     override fun searchByKeywordAndStatusAndOffset(
         keyword: String?,
         status: Collection<Int>,
         offset: Long
     ): Collection<UserDto> {
-        return search(true, "select * from users u where 1 = 1 ", UserDto::class.java) { builder, params ->
-            queryBuilderByKeywordAndStatus(keyword, builder, params, status)
-            builder.append(" limit :limit offset :offset")
-            params["limit"] = Defaults.Pageable.DEFAULT_PAGE_SIZE
-            params["offset"] = offset
-        }
+        val sqlBuilder = StringBuilder("select * from users u where 1 = 1 ")
+        val params = mutableMapOf<String, Any>()
+        buildQueryWithKeywordAndStatus(keyword, sqlBuilder, params, status)
+        sqlBuilder.append(" limit :limit offset :offset")
+        params["limit"] = Defaults.Pageable.DEFAULT_PAGE_SIZE
+        params["offset"] = offset
+
+        val query = entityManager.createNativeQuery(sqlBuilder.toString())
+        return JpaQueryExecutor.builder<UserDto>()
+            .with(query, params)
+            .map(UserDto::class.java)
+            .list()
     }
 
     companion object {
