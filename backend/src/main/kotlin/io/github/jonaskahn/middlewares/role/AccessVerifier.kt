@@ -1,15 +1,19 @@
 package io.github.jonaskahn.middlewares.role
 
-import com.google.inject.ImplementedBy
+import io.github.jonaskahn.exception.ForbiddenAccessException
+import io.github.jonaskahn.middlewares.context.UserContextHolder
 
-@ImplementedBy(AccessVerifierImpl::class)
-interface AccessVerifier {
+object AccessVerifier {
 
     fun hasRole(role: String): Boolean = hasAnyRoles(role)
 
     fun requireRole(role: String) = requireAnyRoles(role)
 
-    fun hasAnyRoles(vararg roles: String): Boolean
+    fun hasAnyRoles(vararg roles: String) = UserContextHolder.getCurrentUserRoles()?.any { roles.contains(it) } ?: false
 
-    fun requireAnyRoles(vararg roles: String)
+    fun requireAnyRoles(vararg roles: String): () -> Unit = {
+        if (!hasAnyRoles(*roles)) {
+            throw ForbiddenAccessException()
+        }
+    }
 }

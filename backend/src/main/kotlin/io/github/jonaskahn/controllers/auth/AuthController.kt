@@ -9,14 +9,11 @@ import io.jooby.annotation.Path
 import jakarta.inject.Inject
 
 @Path
-class AuthController @Inject constructor(
-    private val authenticationService: AuthenticationService,
-    private val beanValidator: BeanValidator
-) {
+class AuthController @Inject constructor(private val authenticationService: AuthenticationService) {
 
     @POST("/auth/generate-token")
     fun generateToken(request: GenerateTokenRequest): Response<String> {
-        beanValidator.validate(request)
+        BeanValidator.validate(request)
         val token = authenticationService.generateToken(request.username!!, request.password!!, request.rememberMe)
         return Response.ok(token, "app.common.message.welcome")
     }

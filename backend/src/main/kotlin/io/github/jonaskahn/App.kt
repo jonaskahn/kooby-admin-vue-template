@@ -9,7 +9,6 @@ import io.github.jonaskahn.controllers.auth.AuthController
 import io.github.jonaskahn.controllers.user.UserController
 import io.github.jonaskahn.exception.*
 import io.github.jonaskahn.extensions.JedisModule
-import io.github.jonaskahn.extensions.ValidatorModule
 import io.github.jonaskahn.middlewares.context.LanguageContextHolder
 import io.github.jonaskahn.middlewares.jwt.AdvancedJwtAuthenticator
 import io.jooby.MediaType
@@ -51,7 +50,6 @@ fun Kooby.setting() {
     install(GuiceModule())
 
     install(JedisModule())
-    install(ValidatorModule())
 
     install(HikariModule())
     install(FlywayModule())
