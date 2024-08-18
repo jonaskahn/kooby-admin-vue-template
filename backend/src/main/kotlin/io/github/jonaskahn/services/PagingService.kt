@@ -2,6 +2,7 @@ package io.github.jonaskahn.services
 
 import io.github.jonaskahn.assistant.PageData
 import io.github.jonaskahn.constants.Defaults.Pageable.DEFAULT_PAGE_SIZE
+import io.github.jonaskahn.entities.enums.State
 import io.github.jonaskahn.entities.enums.Status
 import kotlin.math.ceil
 
@@ -9,16 +10,18 @@ abstract class PagingService {
 
     fun <T> search(
         statuses: Collection<Status> = listOf(),
+        states: Collection<State> = listOf(),
         pageNo: Long,
-        count: (statuses: Collection<Int>) -> Long,
-        lookup: (statuses: Collection<Int>, offset: Long) -> Collection<T>
+        count: (statuses: Collection<Int>, states: Collection<Int>) -> Long,
+        lookup: (statuses: Collection<Int>, states: Collection<Int>, offset: Long) -> Collection<T>
     ): PageData<T> {
         val statusValues = statuses.ifEmpty { Status.entries }.map { it.id }
-        val totalItems = count(statusValues)
+        val statesValues = states.ifEmpty { State.entries }.map {it.id}
+        val totalItems = count(statusValues, statesValues)
         val totalPages = (ceil(totalItems * 1F / DEFAULT_PAGE_SIZE)).toLong()
         val calculatedPageNumber = calculatePageNumber(pageNo, totalPages)
         val offset = (calculatedPageNumber - 1) * DEFAULT_PAGE_SIZE
-        val records = if (totalItems > 0) lookup(statusValues, offset) else listOf()
+        val records = if (totalItems > 0) lookup(statusValues, statesValues, offset) else listOf()
         return PageData(
             data = records,
             currentPage = if (totalPages == 0L) 0L else calculatedPageNumber,

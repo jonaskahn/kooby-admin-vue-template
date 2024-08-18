@@ -6,8 +6,10 @@ import io.github.jonaskahn.services.user.UserService
 import io.jooby.annotation.GET
 import io.jooby.annotation.POST
 import io.jooby.annotation.Path
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.inject.Inject
 
+@Tag(name = "User", description = "APIs for user management and user-related operations")
 @Path
 class UserController @Inject constructor(private val userService: UserService) {
 

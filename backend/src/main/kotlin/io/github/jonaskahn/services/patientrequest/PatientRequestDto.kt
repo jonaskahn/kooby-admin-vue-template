@@ -9,7 +9,7 @@ import java.time.LocalDate
 
 open class PatientRequestDto {
 
-    open var id: Int? = null
+    open var patientRequestId: Int? = null
     open var numberOrder: Int? = null
     open var patientNumber: String? = null
     open var medicineCode: String? = null
@@ -25,6 +25,8 @@ open class PatientRequestDto {
     open var note: String? = null
     open var donePatientDate: Instant? = null
     open var signDate: Instant? = null
+//    open var state: State? = State.PENDING
+//    open var status: Status? = Status.ACTIVATED
     open var state: State? = State.PENDING
         set(value){
             field = value
@@ -42,4 +44,15 @@ open class PatientRequestDto {
 
     @JsonSerialize(using = MessageJsonSerializer::class)
     open var statusName: String? = null
+
+    // Fields from Delivery
+    open var deliveryId: Int? = null
+    open var orderNumber: Int? = null
+    open var yearOfOrder: Int? = null
+    open var address: String? = null
+    open var phone: String? = null
+    open var idProvince: Int? = null
+    open var idDistrict: Int? = null
+    open var cost: Int? = null
+    open var deliveryDate: LocalDate? = null
 }

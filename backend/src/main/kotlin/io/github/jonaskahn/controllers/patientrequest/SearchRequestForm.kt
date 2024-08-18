@@ -1,7 +1,9 @@
 package io.github.jonaskahn.controllers.patientrequest
 
-class SearchRequestForm {
-    val keyword: String = ""
-    val offset: Int = 0
-    val limit: Int = 10
-}
+import io.github.jonaskahn.entities.enums.State
+
+data class SearchRequestForm(
+    val keyword: String? = null,
+    val states: Collection<State> = listOf(State.PENDING),
+    val pageNo: Long =0L
+)

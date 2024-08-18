@@ -7,6 +7,7 @@ import io.github.jonaskahn.controllers.HealthController
 import io.github.jonaskahn.controllers.TestRoleController
 import io.github.jonaskahn.controllers.address.AddressController
 import io.github.jonaskahn.controllers.auth.AuthController
+import io.github.jonaskahn.controllers.department.DepartmentController
 import io.github.jonaskahn.controllers.patientrequest.PatientRequestController
 import io.github.jonaskahn.controllers.user.UserController
 import io.github.jonaskahn.exception.*
@@ -181,6 +182,7 @@ fun Kooby.routes() {
         mvc(TestRoleController::class.java)
         mvc(AddressController::class.java)
         mvc(PatientRequestController::class.java)
+        mvc(DepartmentController::class.java)
     }) {})
 }
 

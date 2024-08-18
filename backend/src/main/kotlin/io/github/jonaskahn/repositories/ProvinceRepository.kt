@@ -8,4 +8,6 @@ import io.github.jonaskahn.repositories.impl.ProvinceRepositoryImpl
 interface ProvinceRepository {
 
     fun findAll(): List<Province>
+
+    fun getProvinceById(id: Int): Province
 }

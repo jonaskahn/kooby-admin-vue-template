@@ -14,9 +14,19 @@ class ProvinceRepositoryImpl @Inject constructor(
 
      override fun findAll(): List<Province> {
          val query = entityManager.createQuery(
-             "SELECT d FROM Province d WHERE d.status = :status", Province::class.java
+             "SELECT p FROM Province p WHERE p.status = :status", Province::class.java
          )
          query.setParameter("status", Status.ACTIVATED)
          return query.resultList
+    }
+
+    override fun getProvinceById(id: Int): Province {
+        val query = entityManager.createQuery(
+            "SELECT p FROM Province p WHERE p.id = :id and p.status =:status",Province::class.java
+        )
+        query.setParameter("status", Status.ACTIVATED)
+        query.setParameter("id", id)
+
+        return query.singleResult
     }
 }

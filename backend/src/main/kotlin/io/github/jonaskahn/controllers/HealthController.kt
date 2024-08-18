@@ -3,7 +3,9 @@ package io.github.jonaskahn.controllers
 import io.jooby.annotation.GET
 import io.jooby.annotation.Path
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 
+@Tag(name = "Health", description = "Health-related APIs")
 @Path("/heath")
 class HealthController {
 

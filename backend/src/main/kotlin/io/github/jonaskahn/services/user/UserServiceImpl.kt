@@ -18,16 +18,13 @@ internal class UserServiceImpl @Inject constructor(
     private val passwordEncoder: PasswordEncoder
 ) : UserService, PagingService() {
 
-    override fun search(
-        keyword: String?,
-        statuses: Collection<Status>,
-        pageNo: Long
-    ): PageData<UserDto> {
+    override fun search(keyword: String?, statuses: Collection<Status>, pageNo: Long): PageData<UserDto> {
         return super.search(
             statuses,
+            listOf(),
             pageNo,
-            { status -> userRepository.countByKeywordAndStatus(keyword, status) },
-            { status, offset -> userRepository.searchByKeywordAndStatusAndOffset(keyword, status, offset) }
+            { status, _ -> userRepository.countByKeywordAndStatus(keyword, status) },
+            { status, _, offset -> userRepository.searchByKeywordAndStatusAndOffset(keyword, status, offset) }
         )
     }
 

@@ -6,8 +6,10 @@ import io.github.jonaskahn.services.authen.AuthenticationService
 import io.jooby.annotation.DELETE
 import io.jooby.annotation.POST
 import io.jooby.annotation.Path
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.inject.Inject
 
+@Tag(name = "Auth", description = "APIs related to user authentication and authorization")
 @Path
 class AuthController @Inject constructor(
     private val authenticationService: AuthenticationService,

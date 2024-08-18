@@ -1,16 +1,18 @@
 package io.github.jonaskahn.services.patientrequest
 
+import io.github.jonaskahn.assistant.PageData
 import io.github.jonaskahn.controllers.patientrequest.PaginationResult
 import io.github.jonaskahn.controllers.patientrequest.PatientRequestForm
 import io.github.jonaskahn.entities.PatientRequest
+import io.github.jonaskahn.entities.enums.State
 import io.github.jonaskahn.repositories.PatientRequestRepository
+import io.github.jonaskahn.services.PagingService
 import io.jooby.Context
 import jakarta.inject.Inject
 
 internal class PatientRequestServiceImpl @Inject constructor(
     private val patientRequestRepository: PatientRequestRepository,
-    private val context: Context
-): PatientRequestService {
+): PatientRequestService, PagingService() {
     override fun createRequest(request: PatientRequestForm) {
         val newRequest = PatientRequest()
         newRequest.numberOrder = request.numberOrder
@@ -29,7 +31,18 @@ internal class PatientRequestServiceImpl @Inject constructor(
         patientRequestRepository.create(newRequest)
     }
 
-    override fun findByKeywordWithPagination(keyword: String, offset: Int, limit: Int): PaginationResult<PatientRequestDto> {
-        return patientRequestRepository.findByKeywordWithPagination(keyword, offset, limit)
+    override fun search(
+        keyword: String?,
+        states: Collection<State>,
+        pageNo: Long
+    ): PageData<PatientRequestDto> {
+        return super.search(
+            listOf(),
+            states,
+            pageNo,
+            {_, state -> patientRequestRepository.countByKeywordAndState(keyword, state)},
+            {_, state, offset -> patientRequestRepository.searchByKeywordAndStateAndOffset(keyword, state, offset)}
+
+        )
     }
 }
