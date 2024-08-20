@@ -109,5 +109,21 @@ create table if not exists state_history
         foreign key (id_patient_request) references patient_request (id)
 );
 
+INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (1, 'ADMIN', 'Chủ sở hữu phần mềm', 1, '2024-08-20 12:45:30', NULL, '2024-08-20 12:45:30', NULL);
+INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (2, 'SECRETARY', 'Thư ký', 1, '2024-08-20 12:45:42', NULL, '2024-08-20 12:45:42', NULL);
+INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (3, 'COPY_MAN', 'Người sao chép', 1, '2024-08-20 12:45:56', NULL, '2024-08-20 12:45:56', NULL);
+INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (4, 'APPROVER', 'Người xác nhận', 1, '2024-08-20 12:46:09', NULL, '2024-08-20 12:46:09', NULL);
+INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (5, 'LEADER', 'Lãnh đạo', 1, '2024-08-20 12:46:21', NULL, '2024-08-20 12:46:21', NULL);
+INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (6, 'DATA_ENTRY_PERSON', 'Người tiếp đón', 1, '2024-08-20 12:46:33', NULL, '2024-08-20 12:46:33', NULL);
+INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (7, 'MANAGER', 'Người quản lý', 1, '2024-08-20 12:46:44', NULL, '2024-08-20 12:46:44', NULL);
+
+
+INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (8, 0, 'PENDING', 'Chưa xử lý', 1, '2024-08-20 12:50:24', NULL, '2024-08-20 12:50:24', NULL);
+INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (9, 1, 'ASSIGNED', 'Đã phân công', 1, '2024-08-20 12:50:37', NULL, '2024-08-20 12:50:37', NULL);
+INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (10, 2, 'IN_PROGRESS', 'Đang tiến hành', 1, '2024-08-20 12:50:47', NULL, '2024-08-20 12:50:47', NULL);
+INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (11, 3, 'MANAGER_APPROVED', 'Quản lý đã phê duyệt', 1, '2024-08-20 12:50:55', NULL, '2024-08-20 12:50:55', NULL);
+INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (12, 4, 'DIRECTOR_APPROVED', 'Thủ trưởng đã phê duyệt', 1, '2024-08-20 12:51:04', NULL, '2024-08-20 12:51:04', NULL);
+INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (13, 5, 'REJECTED', 'Đã từ chối', 1, '2024-08-20 12:51:14', NULL, '2024-08-20 12:51:14', NULL);
+INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (14, 6, 'COMPLETE', 'Hoàn thành', 1, '2024-08-20 12:51:48', NULL, '2024-08-20 12:51:48', NULL);
 
 
