@@ -30,7 +30,7 @@ open class PatientRequestDto {
     open var state: State? = State.PENDING
         set(value){
             field = value
-            this.stateName = value?.name
+            this.stateName = value?.description
         }
 
     @JsonSerialize(using = MessageJsonSerializer::class)
@@ -39,7 +39,7 @@ open class PatientRequestDto {
     open var status: Status? = Status.ACTIVATED
         set(value) {
             field = value
-            this.statusName = value?.name
+            this.statusName = value?.description
         }
 
     @JsonSerialize(using = MessageJsonSerializer::class)
