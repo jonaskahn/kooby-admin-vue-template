@@ -1,7 +1,6 @@
 create table if not exists patient_request
 (
-    id                       int auto_increment
-        primary key,
+    id                       int auto_increment primary key,
     number_order             int           null,
     patient_number           varchar(10)   null,
     medicine_code            varchar(15)   null,
@@ -36,8 +35,7 @@ create table if not exists patient_request
 
 create table if not exists approvals
 (
-    id                 int auto_increment
-        primary key,
+    id                 int auto_increment                    primary key,
     id_patient_request int                                   not null,
     id_user            int                                   not null,
     role               varchar(255)                          null,
@@ -54,8 +52,7 @@ create table if not exists approvals
 
 create table if not exists assignments
 (
-    id                 int auto_increment
-        primary key,
+    id                 int auto_increment                    primary key,
     id_patient_request int                                   null,
     id_copy_user       int                                   null,
     appointment_date   date                                  null,
@@ -71,8 +68,7 @@ create table if not exists assignments
 
 create table if not exists roles
 (
-    id           int auto_increment
-        primary key,
+    id           int auto_increment                    primary key,
     name         varchar(40)                           null,
     descriptions varchar(255)                          null,
     status       tinyint   default 1                   null,
@@ -84,8 +80,8 @@ create table if not exists roles
 
 create table if not exists states
 (
-    id           int auto_increment
-        primary key,
+    id           int auto_increment                    primary key,
+    code         tinyint   default 0                   null,
     name         varchar(40)                           null,
     descriptions varchar(255)                          null,
     status       tinyint   default 1                   null,
@@ -97,8 +93,7 @@ create table if not exists states
 
 create table if not exists state_history
 (
-    id                 int auto_increment
-        primary key,
+    id                 int auto_increment                    primary key,
     id_patient_request int                                   null,
     state              tinyint                               null,
     created_at         timestamp default current_timestamp() null,
@@ -118,12 +113,12 @@ INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `crea
 INSERT INTO `roles` (`id`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (7, 'MANAGER', 'Người quản lý', 1, '2024-08-20 12:46:44', NULL, '2024-08-20 12:46:44', NULL);
 
 
-INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (8, 0, 'PENDING', 'Chưa xử lý', 1, '2024-08-20 12:50:24', NULL, '2024-08-20 12:50:24', NULL);
-INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (9, 1, 'ASSIGNED', 'Đã phân công', 1, '2024-08-20 12:50:37', NULL, '2024-08-20 12:50:37', NULL);
-INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (10, 2, 'IN_PROGRESS', 'Đang tiến hành', 1, '2024-08-20 12:50:47', NULL, '2024-08-20 12:50:47', NULL);
-INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (11, 3, 'MANAGER_APPROVED', 'Quản lý đã phê duyệt', 1, '2024-08-20 12:50:55', NULL, '2024-08-20 12:50:55', NULL);
-INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (12, 4, 'DIRECTOR_APPROVED', 'Thủ trưởng đã phê duyệt', 1, '2024-08-20 12:51:04', NULL, '2024-08-20 12:51:04', NULL);
-INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (13, 5, 'REJECTED', 'Đã từ chối', 1, '2024-08-20 12:51:14', NULL, '2024-08-20 12:51:14', NULL);
-INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (14, 6, 'COMPLETE', 'Hoàn thành', 1, '2024-08-20 12:51:48', NULL, '2024-08-20 12:51:48', NULL);
+INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (1, 0, 'PENDING', 'Chưa xử lý', 1, '2024-08-20 12:50:24', NULL, '2024-08-20 12:50:24', NULL);
+INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (2, 1, 'ASSIGNED', 'Đã phân công', 1, '2024-08-20 12:50:37', NULL, '2024-08-20 12:50:37', NULL);
+INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (3, 2, 'IN_PROGRESS', 'Đang tiến hành', 1, '2024-08-20 12:50:47', NULL, '2024-08-20 12:50:47', NULL);
+INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (4, 3, 'MANAGER_APPROVED', 'Quản lý đã phê duyệt', 1, '2024-08-20 12:50:55', NULL, '2024-08-20 12:50:55', NULL);
+INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (5, 4, 'DIRECTOR_APPROVED', 'Thủ trưởng đã phê duyệt', 1, '2024-08-20 12:51:04', NULL, '2024-08-20 12:51:04', NULL);
+INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (6, 5, 'REJECTED', 'Đã từ chối', 1, '2024-08-20 12:51:14', NULL, '2024-08-20 12:51:14', NULL);
+INSERT INTO `states` (`id`, `code`, `name`, `descriptions`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES (7, 6, 'COMPLETE', 'Hoàn thành', 1, '2024-08-20 12:51:48', NULL, '2024-08-20 12:51:48', NULL);
 
 
