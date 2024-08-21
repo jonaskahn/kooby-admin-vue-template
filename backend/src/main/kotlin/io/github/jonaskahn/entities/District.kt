@@ -11,19 +11,22 @@ import java.time.Instant
 @Table(name = "district")
 open class District: BaseEntity() {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     open var id: Int? = null
 
-    @Column(name = "id_province")
+    @JoinColumn(name = "id_province")
     open var idProvince: Int? = null
 
     @Size(max = 255)
     @Column(name = "name")
     open var name: String? = null
 
+    @Column(name = "delivery_fee")
+    open var deliveryFee: Int? = null
+
     @ColumnDefault("1")
     @Column(name = "status", nullable = false)
     @Convert(converter = StatusConverter::class)
     open var status: Status? = Status.ACTIVATED
-
 }

@@ -1,7 +1,7 @@
 package io.github.jonaskahn.services.patientrequest
 
 import io.github.jonaskahn.controllers.patientrequest.PaginationResult
-import io.github.jonaskahn.entities.Delivery
+import io.github.jonaskahn.entities.Assignment
 import io.github.jonaskahn.entities.PatientRequest
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
@@ -14,11 +14,10 @@ interface PatientRequestEntityToDtoMapper {
         var INSTANCE: PatientRequestEntityToDtoMapper = Mappers.getMapper(PatientRequestEntityToDtoMapper::class.java)
     }
     @Mappings(
-        Mapping(source = "patientRequest.id", target = "patientRequestId"),
-        Mapping(source = "patientRequest.numberOrder", target = "numberOrder"),
+        Mapping(source = "assignment.id", target = "idAssignment"),
 
-        Mapping(source = "delivery.id", target = "deliveryId"),
-        Mapping(source = "delivery.orderNumber", target = "orderNumber"),
+        Mapping(source = "patientRequest.status", target = "requestStatus"),
+        Mapping(source = "patientRequest.id", target = "idPatientRequest"),
     )
-    fun toDto(patientRequest: PatientRequest, delivery: Delivery?): PatientRequestDto
+    fun toDto(patientRequest: PatientRequest, assignment: Assignment?): PatientRequestDto
 }

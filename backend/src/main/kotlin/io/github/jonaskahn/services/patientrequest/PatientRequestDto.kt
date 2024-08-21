@@ -4,12 +4,16 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import io.github.jonaskahn.assistant.jackson.MessageJsonSerializer
 import io.github.jonaskahn.entities.enums.State
 import io.github.jonaskahn.entities.enums.Status
+import jakarta.persistence.Column
+import jakarta.persistence.Lob
+import jakarta.validation.constraints.Size
+import org.hibernate.annotations.ColumnDefault
 import java.time.Instant
 import java.time.LocalDate
 
 open class PatientRequestDto {
 
-    open var patientRequestId: Int? = null
+    open var idPatientRequest: Int? = null
     open var numberOrder: Int? = null
     open var patientNumber: String? = null
     open var medicineCode: String? = null
@@ -25,10 +29,8 @@ open class PatientRequestDto {
     open var note: String? = null
     open var donePatientDate: Instant? = null
     open var signDate: Instant? = null
-//    open var state: State? = State.PENDING
-//    open var status: Status? = Status.ACTIVATED
-    open var state: State? = State.PENDING
-        set(value){
+    open var state: State? = null
+        set(value) {
             field = value
             this.stateName = value?.description
         }
@@ -36,7 +38,7 @@ open class PatientRequestDto {
     @JsonSerialize(using = MessageJsonSerializer::class)
     open var stateName: String? = null
 
-    open var status: Status? = Status.ACTIVATED
+    open var requestStatus: Status? = null
         set(value) {
             field = value
             this.statusName = value?.description
@@ -44,15 +46,18 @@ open class PatientRequestDto {
 
     @JsonSerialize(using = MessageJsonSerializer::class)
     open var statusName: String? = null
-
-    // Fields from Delivery
-    open var deliveryId: Int? = null
-    open var orderNumber: Int? = null
-    open var yearOfOrder: Int? = null
-    open var address: String? = null
-    open var phone: String? = null
-    open var idProvince: Int? = null
+    open var isDelivery: Int? = null
+    open var deliveryOrderNumber: Int? = null
+    open var deliveryYearOfOrder: Int? = null
+    open var deliveryAddress: String? = null
+    open var deliveryPhone: String? = null
     open var idDistrict: Int? = null
-    open var cost: Int? = null
-    open var deliveryDate: LocalDate? = null
+    open var deliveryCost: Int? = null
+    open var deliveryDate: Instant? = null
+
+    // assignment table
+    open var idAssignment: Int? = null
+    open var idCopyUser: Int? = null
+    open var appointmentDate: LocalDate? = null
+    open var completionDate: Instant? = null
 }

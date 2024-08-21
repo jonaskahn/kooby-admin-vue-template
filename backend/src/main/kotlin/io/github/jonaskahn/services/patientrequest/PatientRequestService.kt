@@ -4,7 +4,6 @@ import com.google.inject.ImplementedBy
 import io.github.jonaskahn.assistant.PageData
 import io.github.jonaskahn.controllers.patientrequest.PaginationResult
 import io.github.jonaskahn.controllers.patientrequest.PatientRequestForm
-import io.github.jonaskahn.entities.PatientRequest
 import io.github.jonaskahn.entities.enums.State
 
 @ImplementedBy(PatientRequestServiceImpl::class)

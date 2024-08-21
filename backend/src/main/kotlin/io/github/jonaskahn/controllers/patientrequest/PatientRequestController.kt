@@ -2,7 +2,6 @@ package io.github.jonaskahn.controllers.patientrequest
 
 
 import io.github.jonaskahn.assistant.PageData
-import io.github.jonaskahn.entities.PatientRequest
 import io.github.jonaskahn.services.patientrequest.PatientRequestDto
 import io.github.jonaskahn.services.patientrequest.PatientRequestService
 import io.jooby.annotation.POST

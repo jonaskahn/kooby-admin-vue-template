@@ -2,8 +2,8 @@ package io.github.jonaskahn.entities
 
 import io.github.jonaskahn.entities.converter.StateConverter
 import io.github.jonaskahn.entities.converter.StatusConverter
-import io.github.jonaskahn.entities.enums.State
 import io.github.jonaskahn.entities.enums.Status
+import io.github.jonaskahn.entities.enums.State
 import jakarta.persistence.*
 import jakarta.validation.constraints.Size
 import org.hibernate.annotations.ColumnDefault
@@ -14,6 +14,7 @@ import java.time.LocalDate
 @Table(name = "patient_request")
 open class PatientRequest: BaseEntity() {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     open var id: Int? = null
 
@@ -78,4 +79,34 @@ open class PatientRequest: BaseEntity() {
     @Column(name = "status", nullable = false)
     @Convert(converter = StatusConverter::class)
     open var status: Status? = Status.ACTIVATED
+
+    @ColumnDefault("0")
+    @Column(name = "is_delivery")
+    open var isDelivery: Int? = null
+
+    @Column(name = "delivery_order_number")
+    open var deliveryOrderNumber: Int? = null
+
+    @Column(name = "delivery_year_of_order")
+    open var deliveryYearOfOrder: Int? = null
+
+    @Size(max = 4000)
+    @Column(name = "delivery_address", length = 4000)
+    open var deliveryAddress: String? = null
+
+    @Size(max = 15)
+    @Column(name = "delivery_phone", length = 15)
+    open var deliveryPhone: String? = null
+
+    @Column(name = "id_province")
+    open var idProvince: Int? = null
+
+    @Column(name = "id_district")
+    open var idDistrict: Int? = null
+
+    @Column(name = "delivery_cost")
+    open var deliveryCost: Int? = null
+
+    @Column(name = "delivery_date")
+    open var deliveryDate: Instant? = null
 }
