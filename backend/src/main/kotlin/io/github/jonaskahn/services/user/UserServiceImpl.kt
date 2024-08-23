@@ -36,10 +36,12 @@ internal class UserServiceImpl @Inject constructor(
         val newUser = User()
         newUser.email = request.email
         newUser.username = request.username ?: request.email
+        newUser.firstName = request.name
         newUser.fullName = request.name
         newUser.password = passwordEncoder.encode(request.password!!)
         newUser.preferredUsername = TSID.fast().toLong()
         newUser.status = Status.ACTIVATED
+        newUser.imageLink = request.username
         userRepository.create(newUser)
     }
 

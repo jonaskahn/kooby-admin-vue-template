@@ -23,6 +23,9 @@ open class User : BaseEntity() {
     @Column(name = "email", length = 128)
     open var email: String? = null
 
+    @Column(name = "first_name")
+    open var firstName: String? = null
+
     @Column(name = "full_name")
     open var fullName: String? = null
 
@@ -47,6 +50,9 @@ open class User : BaseEntity() {
 
         return id == other.id
     }
+
+    @Column(name = "image_link")
+    open var imageLink: String? = null
 
     override fun hashCode(): Int {
         return id?.hashCode() ?: 0
