@@ -9,6 +9,10 @@ import io.github.jonaskahn.services.patientrequest.PatientRequestDto
 interface PatientRequestRepository {
     fun create(entity: PatientRequest)
 
+    fun update(entity: PatientRequest)
+
+    fun delete(id: Long)
+
     fun countByKeywordAndState(keyword: String?, state: Collection<Int>): Long
 
     fun searchByKeywordAndStateAndOffset(keyword: String?, state: Collection<Int>, offset: Long): Collection<PatientRequestDto>

@@ -4,6 +4,7 @@ import java.time.Instant
 import java.time.LocalDate
 
 class PatientRequestForm {
+     var id: Int? = null
      var numberOrder: Int? = null
      var patientNumber: String? = null
      var medicineCode: String? = null
@@ -17,4 +18,12 @@ class PatientRequestForm {
      var copyQuantity: Int? = null
      var copyCost: Int? = null
      var note: String? = null
+     var isDelivery: Int? = null
+     var deliveryOrderNumber: Int? = null
+     var deliveryYearOfOrder: Int? = null
+     var deliveryAddress: String? = null
+     var deliveryPhone: String? = null
+     var idProvince: Int? = null
+     var idDistrict: Int? = null
+     var deliveryCost: Int? = null
 }

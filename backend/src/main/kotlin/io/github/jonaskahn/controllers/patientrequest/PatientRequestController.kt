@@ -4,9 +4,7 @@ package io.github.jonaskahn.controllers.patientrequest
 import io.github.jonaskahn.assistant.PageData
 import io.github.jonaskahn.services.patientrequest.PatientRequestDto
 import io.github.jonaskahn.services.patientrequest.PatientRequestService
-import io.jooby.annotation.POST
-import io.jooby.annotation.PUT
-import io.jooby.annotation.Path
+import io.jooby.annotation.*
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.inject.Inject
 
@@ -19,6 +17,15 @@ class PatientRequestController @Inject constructor(private val patientRequestSer
         return patientRequestService.createRequest(request)
     }
 
+    @PUT("/patientRequest/update")
+    fun updatePatientRequest(request: PatientRequestForm) {
+        return patientRequestService.updateRequest(request)
+    }
+
+    @DELETE("/patientRequest/delete/{id}")
+    fun deletePatientRequest(@PathParam("id") id: Int) {
+        return patientRequestService.deleteRequest(id)
+    }
 
     @POST("/patientRequest/search")
     fun searchPatientRequest(request: SearchRequestForm): PageData<PatientRequestDto> {

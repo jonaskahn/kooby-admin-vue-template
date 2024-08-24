@@ -18,6 +18,18 @@ class PatientRequestRepositoryImpl @Inject constructor(
         entityManager.persist(entity)
     }
 
+    override fun update(entity: PatientRequest) {
+        entityManager.merge(entity)
+    }
+
+    override fun delete(id: Long) {
+        val entity = entityManager.find(PatientRequest::class.java, id)
+        if (entity != null) {
+            entity.status = Status.DELETED
+            entityManager.merge(entity)
+        }
+    }
+
     override fun countByKeywordAndState(keyword: String?, state: Collection<Int>): Long {
         val likeKeyword = "%${keyword?.trim()}%"
         val countQueryStr = """

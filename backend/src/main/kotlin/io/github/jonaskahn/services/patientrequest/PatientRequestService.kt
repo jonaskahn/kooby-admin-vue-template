@@ -10,6 +10,10 @@ import io.github.jonaskahn.entities.enums.State
 interface PatientRequestService {
     fun createRequest(request: PatientRequestForm)
 
+    fun updateRequest(request: PatientRequestForm)
+
+    fun deleteRequest(requestId: Int)
+
     fun search(
         keyword: String? = null,
         states: Collection<State> = listOf(State.PENDING),
