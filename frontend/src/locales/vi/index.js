@@ -1,5 +1,6 @@
 import AppConfig from '@/locales/vi/global/setting';
 import Menu from '@/locales/vi/global/menu';
+import Login from '@/locales/vi/views/login';
 
 export default {
     'service.default-message.unknown-error': 'Đã có sự cố xảy ra. Vui lòng thử lại sau.',
@@ -14,5 +15,6 @@ export default {
     'global.notification.default-title.info': 'Thông tin',
     'global.notification.default-title.success': 'Thành công',
     ...AppConfig,
-    ...Menu
+    ...Menu,
+    ...Login
 };

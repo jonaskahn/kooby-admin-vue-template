@@ -2,7 +2,7 @@ const SETTINGS = {
     LOADING_PROPERTIES: {
         loader: 'bars',
         opacity: 0.4,
-        color: 'var(--primary-color)',
+        color: 'orange',
         width: 128,
         height: 128
     },

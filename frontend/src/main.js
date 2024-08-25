@@ -23,7 +23,8 @@ app.use(PrimeVue, {
     theme: {
         preset: SettingService.INSTANCE.getPresetThemeComponent(),
         options: {
-            darkModeSelector: '.app-dark'
+            darkModeSelector: '.app-dark',
+            color: 'red',
         }
     }
 });

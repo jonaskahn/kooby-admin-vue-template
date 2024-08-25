@@ -2,7 +2,7 @@
 
 <template>
     <div class="layout-footer">
-        SAKAI by
-        <a class="text-primary font-bold hover:underline" href="https://primevue.org" rel="noopener noreferrer" target="_blank">PrimeVue</a>
+        Hệ thống phần mềm Phòng KHTH
+        <a class="text-primary font-bold hover:underline" href="/" rel="noopener noreferrer" target="_blank"> - @Tungntdev</a>
     </div>
 </template>

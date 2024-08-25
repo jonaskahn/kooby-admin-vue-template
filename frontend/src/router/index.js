@@ -15,30 +15,9 @@ const router = createRouter({
             component: AppLayout,
             children: [
                 page.APP.DASHBOARD,
-
-                page.APP.UIKIT.FORM_LAYOUT,
-                page.APP.UIKIT.INPUT,
-                page.APP.UIKIT.BUTTON,
-                page.APP.UIKIT.TABLE,
-                page.APP.UIKIT.LIST,
-                page.APP.UIKIT.TREE,
-                page.APP.UIKIT.PANEL,
-                page.APP.UIKIT.OVERLAY,
-                page.APP.UIKIT.MEDIA,
-                page.APP.UIKIT.MESSAGE,
-                page.APP.UIKIT.FILE,
-                page.APP.UIKIT.MENU,
-                page.APP.UIKIT.CHARTS,
-                page.APP.UIKIT.MISC,
-                page.APP.UIKIT.TIMELINE,
-
-                page.APP.DOCUMENT,
-                page.APP.EMPTY,
-                page.APP.DOCUMENT,
-                page.APP.CRUD
+                page.APP.PATIENT_RECEPTION.RECEPTION
             ]
         },
-        page.APP.LANDING,
         page.AUTH.LOGIN,
         page.ACCESS.NOT_FOUND,
         page.ACCESS.ERROR,

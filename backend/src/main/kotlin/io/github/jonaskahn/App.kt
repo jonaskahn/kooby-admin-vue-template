@@ -24,6 +24,7 @@ import io.jooby.flyway.FlywayModule
 import io.jooby.guice.GuiceModule
 import io.jooby.handler.AssetHandler
 import io.jooby.handler.AssetSource
+import io.jooby.handler.CorsHandler
 import io.jooby.hibernate.HibernateModule
 import io.jooby.hibernate.TransactionalRequest
 import io.jooby.hikari.HikariModule
@@ -34,6 +35,8 @@ import io.jooby.kt.runApp
 import io.jooby.netty.NettyServer
 import io.jooby.pac4j.Pac4jModule
 import jakarta.persistence.NoResultException
+import org.pac4j.core.authorization.authorizer.CheckHttpMethodAuthorizer
+import org.pac4j.core.context.HttpConstants
 import org.pac4j.http.client.direct.HeaderClient
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration
 import redis.clients.jedis.JedisPooled
@@ -62,8 +65,16 @@ fun Kooby.setting() {
 
     install(
         Pac4jModule()
-            .client("/api/secure/*") {
-                HeaderClient(
+            .client(
+                "/api/secure/*", CheckHttpMethodAuthorizer(
+                    HttpConstants.HTTP_METHOD.GET,
+                    HttpConstants.HTTP_METHOD.POST,
+                    HttpConstants.HTTP_METHOD.PUT,
+                    HttpConstants.HTTP_METHOD.DELETE,
+                    HttpConstants.HTTP_METHOD.PATCH
+                )
+            ) {
+                val client = HeaderClient(
                     "Authorization",
                     "Bearer ",
                     AdvancedJwtAuthenticator(
@@ -71,10 +82,13 @@ fun Kooby.setting() {
                         SecretSignatureConfiguration(it.getString("jwt.salt"))
                     )
                 )
+                client
             }
     )
 
     use(TransactionalRequest().enabledByDefault(true))
+
+    use(CorsHandler())
     setContextAsService(true)
 
 }
