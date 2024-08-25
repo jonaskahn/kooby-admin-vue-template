@@ -20,6 +20,7 @@ import io.jooby.flyway.FlywayModule
 import io.jooby.guice.GuiceModule
 import io.jooby.handler.AssetHandler
 import io.jooby.handler.AssetSource
+import io.jooby.handler.CorsHandler
 import io.jooby.hibernate.HibernateModule
 import io.jooby.hibernate.TransactionalRequest
 import io.jooby.hikari.HikariModule
@@ -56,6 +57,8 @@ fun Kooby.setting() {
     install(HikariModule())
     install(FlywayModule())
     install(HibernateModule().scan("io.github.jonaskahn.entities"))
+
+    use(CorsHandler())
 
     install(
         Pac4jModule()
