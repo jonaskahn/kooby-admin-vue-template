@@ -20,6 +20,7 @@ import io.jooby.flyway.FlywayModule
 import io.jooby.guice.GuiceModule
 import io.jooby.handler.AssetHandler
 import io.jooby.handler.AssetSource
+import io.jooby.handler.Cors
 import io.jooby.handler.CorsHandler
 import io.jooby.hibernate.HibernateModule
 import io.jooby.hibernate.TransactionalRequest
@@ -58,7 +59,13 @@ fun Kooby.setting() {
     install(FlywayModule())
     install(HibernateModule().scan("io.github.jonaskahn.entities"))
 
-    use(CorsHandler())
+    val corsOption = Cors()
+    corsOption.setOrigin("*")
+    corsOption.setUseCredentials(true)
+    corsOption.setHeaders("X-Requested-With", "Content-Type", "Accept", "Origin", "Authorization")
+    corsOption.setMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD")
+    corsOption.setMaxAge(Duration.ofMinutes(60))
+    use(CorsHandler(corsOption))
 
     install(
         Pac4jModule()
