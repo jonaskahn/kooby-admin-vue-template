@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { getCurrentLocale, translate } from '@/locales';
 import logger from '@/common/logger';
-import DEFAULTS from '@/constants/app';
 
 export const ResponseType = {
     SUCCESS: Symbol(0),
@@ -155,7 +154,4 @@ async function onRequestError(error) {
 }
 
 const http = createInstance();
-const httpSecure = createInstance({
-    Authorization: `Bearer ${localStorage.getItem(DEFAULTS.ACCESS.TOKEN)}`
-});
-export { http, httpSecure };
+export { http };
