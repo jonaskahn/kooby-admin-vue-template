@@ -16,7 +16,7 @@
     <properties>
         <application.class>io.github.jonaskahn.AppKt</application.class>
 
-        <jooby.version>3.2.9</jooby.version>
+        <jooby.version>3.3.0</jooby.version>
         <kotlin.version>2.0.10</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <maven.compiler.source>21</maven.compiler.source>
