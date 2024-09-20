@@ -24,6 +24,7 @@ import io.jooby.handler.Cors
 import io.jooby.handler.CorsHandler
 import io.jooby.hibernate.HibernateModule
 import io.jooby.hibernate.TransactionalRequest
+import io.jooby.hibernate.validator.HibernateValidatorModule
 import io.jooby.hikari.HikariModule
 import io.jooby.jackson.JacksonModule
 import io.jooby.kt.AfterContext
@@ -57,6 +58,7 @@ fun Kooby.setting() {
 
     install(HikariModule())
     install(FlywayModule())
+    install(HibernateValidatorModule())
     install(HibernateModule().scan("io.github.jonaskahn.entities"))
 
     val corsOption = Cors()

@@ -6,7 +6,7 @@
 
     <groupId>io.github.jonaskahn</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.0</version>
+    <version>0.0.1</version>
     <name>ADMIN PARENT POM</name>
     <packaging>pom</packaging>
 
