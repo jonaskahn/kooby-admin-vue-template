@@ -32,6 +32,7 @@ export default class AuthService extends BaseService {
 
         const token = JSON.parse(atob(data.split('.')[1]));
         localStorage.setItem(DEFAULTS.ACCESS.EXPIRATION, token['exp']);
+        localStorage.setItem(DEFAULTS.ACCESS.PERMISSIONS, token['$int_roles']);
         authStore.updateExpiration();
         authStore.updatePermission();
     }

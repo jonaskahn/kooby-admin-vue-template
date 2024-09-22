@@ -21,13 +21,14 @@ const initialSurface = () => {
     updateSurfacePalette(surfacePalette);
 };
 
-const { updateExpiration } = useAuthStore();
+const { updateExpiration, updatePermission } = useAuthStore();
 
 onBeforeMount(() => {
     initialPreset();
     initialSurface();
     switchOnDarkMode();
     updateExpiration();
+    updatePermission();
 });
 </script>
 

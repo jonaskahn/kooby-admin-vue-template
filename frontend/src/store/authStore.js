@@ -10,7 +10,7 @@ const useAuthStore = defineStore('authStore', () => {
         return expiration.value !== null && expiration.value !== undefined && new Date().getTime() / 1000 < expiration.value;
     });
 
-    const getPermissions = computed(() => permissions);
+    const getPermissions = computed(() => permissions.value);
 
     function updateExpiration() {
         const time = Number(localStorage.getItem(DEFAULTS.ACCESS.EXPIRATION));
@@ -20,8 +20,9 @@ const useAuthStore = defineStore('authStore', () => {
     }
 
     function updatePermission() {
-        const permissionRawData = localStorage.getItem(DEFAULTS.ACCESS.PERMISSIONS) ?? '[]';
-        permissions.value = JSON.parse(permissionRawData);
+        const permissionRawData = localStorage.getItem(DEFAULTS.ACCESS.PERMISSIONS) ?? '';
+        permissions.value = permissionRawData.split(',');
+        console.debug(permissions.value);
     }
 
     return { isAuthenticated, updateExpiration, getPermissions, updatePermission };
