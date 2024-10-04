@@ -23,7 +23,7 @@ docker compose -f compose/dev.compose.yaml up -d
 
 ### 3. Coding convention
 
-> I do not tie with any coding conventions. Take the best one you want to apply from Google/MS or even default of
+> I do not stick with any coding conventions. Take the best one you want to apply from Google/MS or even default of
 > IntelliJ Idea
 
 ### 4. Notes
