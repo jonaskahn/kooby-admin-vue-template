@@ -8,7 +8,7 @@ or replace table users
     full_name          varchar(255)                          null,
     password           varchar(80)                           not null,
     status             tinyint   default 1                   not null,
-    roles              json                                  null,
+    roles              text                                  null,
     created_at         timestamp default current_timestamp() null,
     created_by         bigint    default 0                   null,
     updated_at         timestamp default current_timestamp() null,

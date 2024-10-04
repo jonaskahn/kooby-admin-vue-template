@@ -34,8 +34,7 @@ open class User : BaseEntity() {
     @Convert(converter = StatusConverter::class)
     open var status: Status? = Status.ACTIVATED
 
-    @Lob
-    @Column(name = "roles")
+    @Column(name = "roles", columnDefinition = "text")
     @Convert(converter = StringCollectionConverter::class)
     open var roles: MutableList<String> = arrayListOf(Roles.USER)
 
