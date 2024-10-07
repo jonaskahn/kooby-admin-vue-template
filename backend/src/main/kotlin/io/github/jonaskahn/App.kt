@@ -74,9 +74,10 @@ fun Kooby.setting() {
             .client(
                 "/api/secure/*", CheckHttpMethodAuthorizer(
                     HttpConstants.HTTP_METHOD.GET,
+                    HttpConstants.HTTP_METHOD.POST,
                     HttpConstants.HTTP_METHOD.PUT,
+                    HttpConstants.HTTP_METHOD.PATCH,
                     HttpConstants.HTTP_METHOD.DELETE,
-                    HttpConstants.HTTP_METHOD.PATCH
                 )
             ) {
                 HeaderClient(
