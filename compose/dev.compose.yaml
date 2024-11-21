@@ -6,9 +6,9 @@ networks:
     enable_ipv6: false
 
 services:
-  database-01:
+  database-02:
     image: bitnami/mariadb:10.11
-    container_name: database-01
+    container_name: database-02
     restart: unless-stopped
     environment:
       - MARIADB_ROOT_USER=root
@@ -28,9 +28,9 @@ services:
       retries: 6
     networks:
       - app
-  cache-01:
+  cache-02:
     image: redis:7.2
-    container_name: cache-01
+    container_name: cache-02
     restart: unless-stopped
     ports:
       - "6389:6379"
