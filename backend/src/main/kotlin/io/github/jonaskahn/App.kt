@@ -91,7 +91,7 @@ fun Kooby.setting() {
             }
     )
 
-    use(TransactionalRequest().useStatelessSession().enabledByDefault(true))
+    use(TransactionalRequest().enabledByDefault(true))
     setContextAsService(true)
 
 }
